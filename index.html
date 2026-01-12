@@ -1,182 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DYON Systems | Redefining Orbital Intelligence</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;800&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --accent-blue: #00d2ff; /* תכלת בהיר */
-            --deep-navy: #050b1a; /* כחול צי עמוק - צבע הרקע הראשי */
-            --text-light: #d1d9e6; /* צבע טקסט בהיר יותר */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DYON Systems | Orbital Intelligence</title>
 
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: var(--deep-navy);
-            color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            display: flex; align-items: center; justify-content: center;
-            overflow-x: hidden;
-            position: relative; /* לבסיס של הרשת */
-        }
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600;700&family=Plus+Jakarta+Sans:wght@200;400;700&display=swap" rel="stylesheet">
 
-        /* רקע ערפילית דינמי עדין מאוד */
-        .nebula {
-            position: fixed; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 15% 25%, rgba(0, 150, 255, 0.1) 0%, transparent 45%),
-                radial-gradient(circle at 85% 75%, rgba(80, 0, 255, 0.08) 0%, transparent 45%),
-                radial-gradient(circle at center, #0a1428 0%, var(--deep-navy) 100%); /* מדורג במרכז */
-            filter: blur(60px);
-            animation: nebulaPulse 20s infinite alternate ease-in-out;
-            z-index: -1;
-        }
+<style>
+:root{
+    --accent:#00d2ff;
+    --bg:#030814;
+    --text:#d6e2f0;
+}
 
-        @keyframes nebulaPulse {
-            from { transform: scale(1); opacity: 0.6; }
-            to { transform: scale(1.15); opacity: 0.9; }
-        }
+*{box-sizing:border-box}
 
-        /* רשת קווים עדינה מעל הכל */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(0, 210, 255, 0.03) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 210, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: 1; /* מעל הערפילית, מתחת לתוכן */
-            pointer-events: none; /* כדי לא להפריע ללחיצות */
-            animation: gridShift 40s infinite linear;
-        }
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    background:radial-gradient(circle at center,#08142c 0%,var(--bg) 70%);
+    font-family:'Plus Jakarta Sans',sans-serif;
+    color:white;
+    overflow:hidden;
+}
 
-        @keyframes gridShift {
-            from { background-position: 0 0; }
-            to { background-position: 100px 100px; }
-        }
+/* STARFIELD */
+.stars, .stars::after{
+    position:fixed;
+    width:200%;
+    height:200%;
+    background:
+        radial-gradient(1px 1px at 20% 30%,#fff,transparent),
+        radial-gradient(1px 1px at 80% 70%,#fff,transparent),
+        radial-gradient(1px 1px at 50% 50%,#fff,transparent);
+    animation: drift 120s linear infinite;
+    opacity:.25;
+}
+.stars::after{
+    content:"";
+    animation-duration:200s;
+    opacity:.15;
+}
+@keyframes drift{
+    from{transform:translate(0,0)}
+    to{transform:translate(-500px,-500px)}
+}
 
+/* NEBULA */
+.nebula{
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 20% 30%,rgba(0,210,255,.12),transparent 40%),
+        radial-gradient(circle at 80% 70%,rgba(120,0,255,.1),transparent 45%);
+    filter:blur(80px);
+    animation:nebula 18s ease-in-out infinite alternate;
+}
+@keyframes nebula{
+    from{opacity:.5}
+    to{opacity:.9}
+}
 
-        .hero-section {
-            text-align: center;
-            width: 90%;
-            max-width: 1200px;
-            z-index: 10;
-            padding: 20px;
-            opacity: 0; /* מתחיל שקוף */
-            animation: sectionAppear 1s ease-out forwards;
-        }
+/* GRID */
+.grid{
+    position:fixed;
+    inset:0;
+    background-image:
+        linear-gradient(rgba(0,210,255,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,210,255,.035) 1px,transparent 1px);
+    background-size:60px 60px;
+    animation:gridMove 60s linear infinite;
+    pointer-events:none;
+}
+@keyframes gridMove{
+    to{background-position:120px 120px}
+}
 
-        @keyframes sectionAppear {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+/* HERO */
+.hero{
+    position:relative;
+    z-index:5;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:40px;
+}
 
-        .logo-container {
-            margin-bottom: 50px;
-        }
+.hero-inner{
+    max-width:1100px;
+    animation:enter 1.4s ease-out forwards;
+    opacity:0;
+}
+@keyframes enter{
+    to{opacity:1;transform:translateY(0)}
+    from{opacity:0;transform:translateY(40px)}
+}
 
-        .logo-img {
-            width: 620px; 
-            max-width: 100%;
-            height: auto;
-            filter: drop_shadow(0 0 35px rgba(0, 210, 255, 0.25));
-            animation: logoBreathe 8s infinite ease-in-out;
-        }
+/* LOGO */
+.logo{
+    width:620px;
+    max-width:100%;
+    margin-bottom:50px;
+    filter:drop-shadow(0 0 60px rgba(0,210,255,.35));
+    animation:logoPulse 7s ease-in-out infinite;
+}
+@keyframes logoPulse{
+    50%{transform:scale(1.03);filter:drop-shadow(0 0 90px rgba(0,210,255,.55))}
+}
 
-        @keyframes logoBreathe {
-            0%, 100% { transform: scale(1); opacity: 0.95; filter: drop-shadow(0 0 30px rgba(0, 210, 255, 0.2)); }
-            50% { transform: scale(1.02); opacity: 1; filter: drop-shadow(0 0 50px rgba(0, 210, 255, 0.4)); }
-        }
+/* ORBIT LINE */
+.orbit{
+    width:420px;
+    height:2px;
+    margin:0 auto 40px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+    box-shadow:0 0 25px var(--accent);
+    animation:scan 4s linear infinite;
+}
+@keyframes scan{
+    from{opacity:.3}
+    to{opacity:1}
+}
 
-        h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 300;
-            letter-spacing: 15px;
-            text-transform: uppercase;
-            color: var(--accent-blue);
-            margin-bottom: 30px;
-            opacity: 0;
-            animation: fadeInLettering 2.5s 0.5s forwards;
-            text-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
-        }
+/* TITLE */
+h1{
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:14px;
+    font-weight:300;
+    font-size:1rem;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:35px;
+    text-shadow:0 0 20px rgba(0,210,255,.4);
+}
 
-        @keyframes fadeInLettering {
-            from { opacity: 0; letter-spacing: 25px; filter: blur(10px); }
-            to { opacity: 0.9; letter-spacing: 15px; filter: blur(0); }
-        }
+/* TEXT */
+.desc{
+    font-size:1.55rem;
+    line-height:1.65;
+    color:var(--text);
+    font-weight:200;
+    margin-bottom:60px;
+}
+.desc strong{
+    color:#fff;
+    font-weight:700;
+}
 
-        .description {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            max-width: 850px;
-            margin: 0 auto 55px auto;
-            font-weight: 200;
-            color: var(--text-light);
-            opacity: 0;
-            animation: fadeInUp 1.5s 1.5s forwards;
-        }
+/* CTA */
+.cta{
+    display:inline-block;
+    padding:22px 75px;
+    border:1px solid rgba(0,210,255,.4);
+    color:#fff;
+    text-decoration:none;
+    letter-spacing:5px;
+    font-family:'Space Grotesk',sans-serif;
+    text-transform:uppercase;
+    background:rgba(0,210,255,.05);
+    transition:.6s cubic-bezier(.19,1,.22,1);
+    box-shadow:0 0 40px rgba(0,210,255,.15);
+}
+.cta:hover{
+    background:rgba(0,210,255,.15);
+    box-shadow:0 0 80px rgba(0,210,255,.45);
+    transform:translateY(-3px);
+    letter-spacing:7px;
+}
 
-        .highlight {
-            color: #fff;
-            font-weight: 700;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 20px 65px;
-            background: rgba(0, 210, 255, 0.03);
-            color: #fff;
-            text-decoration: none;
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            border-radius: 4px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-            opacity: 0;
-            animation: fadeInUp 1.5s 2s forwards;
-        }
-
-        .cta-button:hover {
-            border-color: var(--accent-blue);
-            background: rgba(0, 210, 255, 0.1);
-            box-shadow: 0 0 40px rgba(0, 210, 255, 0.3);
-            transform: translateY(-2px);
-            letter-spacing: 6px;
-        }
-
-        /* התאמה לנייד */
-        @media (max-width: 768px) {
-            h1 { font-size: 0.85rem; letter-spacing: 8px; }
-            .description { font-size: 1.2rem; }
-            .logo-img { width: 95%; }
-            .cta-button { width: 85%; padding: 18px 0; }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(25px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+/* MOBILE */
+@media(max-width:768px){
+    h1{letter-spacing:7px;font-size:.8rem}
+    .desc{font-size:1.2rem}
+    .cta{padding:18px 0;width:85%}
+}
+</style>
 </head>
+
 <body>
-    <div class="nebula"></div>
-    <section class="hero-section">
-        <div class="logo-container">
-            <img src="logo.png" alt="DYON Systems" class="logo-img">
-        </div>
+
+<div class="stars"></div>
+<div class="nebula"></div>
+<div class="grid"></div>
+
+<section class="hero">
+    <div class="hero-inner">
+        <img src="logo.png" class="logo" alt="DYON Systems">
+
+        <div class="orbit"></div>
+
         <h1>Satellite Operating Systems</h1>
-        <p class="description">
-            Architecting <strong>Hybrid Infrastructure</strong> for the NewSpace Era. <br>
-            Autonomous reliability through hardware-enforced isolation.
+
+        <p class="desc">
+            Architecting <strong>Hybrid Orbital Infrastructure</strong><br>
+            Autonomous resilience through hardware-enforced isolation.
         </p>
-        <a href="mailto:idanva13@gmail.com" class="cta-button">Establish Connection</a>
-    </section>
+
+        <a href="mailto:idanva13@gmail.com" class="cta">
+            Establish Connection
+        </a>
+    </div>
+</section>
+
 </body>
 </html>
