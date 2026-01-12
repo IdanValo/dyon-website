@@ -3,130 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DYON Systems | Quantum Core OS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@200;400&display=swap" rel="stylesheet">
+    <title>DYON Systems | Satellite OS Infrastructure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@200;400&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon: #00f0ff;
-            --bg: #01040b;
-            --glass: rgba(255, 255, 255, 0.03);
+            --bg: #02060f;
+            --border: rgba(0, 240, 255, 0.3);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background-color: var(--bg);
-            color: #e8f8ff; font-family: 'JetBrains Mono', monospace;
-            overflow: hidden; touch-action: none;
+            color: #fff; font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
         }
 
-        /* ===== BOOT SCREEN ===== */
+        /* ===== BOOT LOADER ===== */
         #boot-screen {
             position: fixed; inset: 0; background: var(--bg);
             z-index: 10000; display: flex; align-items: center; justify-content: center;
-            padding: 30px; transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 30px; transition: opacity 0.8s ease;
         }
         #boot-log {
-            width: 100%; max-width: 500px; font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+            width: 100%; max-width: 500px; font-size: 0.9rem;
             color: var(--neon); text-transform: uppercase; line-height: 1.8;
         }
 
-        /* ===== MAIN CONTAINER ===== */
+        /* ===== MAIN INTERFACE ===== */
         #main-site {
             position: relative; width: 100%; height: 100vh;
             display: flex; align-items: center; justify-content: center;
-            opacity: 0; transform: scale(1.1);
-            transition: opacity 2s ease, transform 2s cubic-bezier(0.19, 1, 0.22, 1);
-            z-index: 5;
+            opacity: 0; transition: opacity 1.5s ease;
+            background: radial-gradient(circle at center, #0a1b3d 0%, var(--bg) 80%);
         }
-        #main-site.active { opacity: 1; transform: scale(1); }
+        #main-site.active { opacity: 1; }
 
-        .stars {
-            position: fixed; inset: -50%;
-            background: radial-gradient(1px 1px at 20% 30%,#fff,transparent),
-                        radial-gradient(1px 1px at 80% 70%,#fff,transparent);
-            opacity: .1; animation: drift 200s linear infinite; z-index: 1;
+        /* GRID BACKGROUND */
+        .grid-bg {
+            position: absolute; inset: 0;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px; opacity: 0.05; pointer-events: none;
         }
-        .nebula {
-            position: fixed; inset: 0;
-            background: radial-gradient(circle at 30% 40%,rgba(0,240,255,.1),transparent 40%),
-                        radial-gradient(circle at 70% 60%,rgba(120,90,255,.08),transparent 40%);
-            filter: blur(100px); z-index: 0;
-        }
-        @keyframes drift { to { transform: translate(-10%, -10%); } }
 
-        .interface {
+        /* THE PANEL */
+        .interface-panel {
             position: relative;
-            width: 90%;
-            max-width: 1100px;
-            max-height: 90vh;
-            padding: clamp(30px, 6vh, 80px) clamp(20px, 4vw, 60px);
-            background: var(--glass);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid rgba(0, 240, 255, 0.2);
-            box-shadow: 0 0 100px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,240,255,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
+            width: 90%; max-width: 1000px;
+            padding: clamp(40px, 8vh, 80px) 30px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            text-align: center; z-index: 10;
         }
 
         .logo {
-            width: clamp(280px, 50vw, 580px);
-            height: auto;
-            filter: drop-shadow(0 0 40px rgba(0, 240, 255, 0.4));
-            margin-bottom: clamp(20px, 4vh, 40px);
+            width: 600px; max-width: 100%; height: auto;
+            margin-bottom: 40px; filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.3));
         }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.6rem, 2vw, 0.8rem);
-            letter-spacing: clamp(4px, 1.5vw, 10px);
-            color: var(--neon);
-            text-transform: uppercase;
-            margin: 0 0 20px 0;
+            font-size: 0.8rem; letter-spacing: 10px;
+            color: var(--neon); text-transform: uppercase; margin-bottom: 25px;
         }
 
+        /* הטקסט המדויק למיזם */
         .headline {
-            font-size: clamp(1rem, 3.5vw, 1.4rem);
-            line-height: 1.6;
-            font-weight: 200;
-            max-width: 850px;
-            margin: 0 auto clamp(30px, 5vh, 60px);
-            color: #cbd5e1;
+            font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+            line-height: 1.6; font-weight: 300;
+            max-width: 850px; margin: 0 auto 50px;
+            color: #d1d9e6;
         }
         .highlight { color: #fff; font-weight: 700; border-bottom: 1px solid var(--neon); }
 
         .cta {
             display: inline-block;
-            padding: clamp(15px, 2vh, 22px) clamp(30px, 5vw, 70px);
+            padding: 20px 60px;
             border: 1px solid var(--neon);
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.75rem, 2vw, 0.95rem);
-            letter-spacing: 3px;
-            text-decoration: none;
-            color: #fff;
+            letter-spacing: 4px; text-transform: uppercase;
+            text-decoration: none; color: #fff;
             background: rgba(0, 240, 255, 0.05);
-            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: 0.4s;
         }
-        .cta:hover { background: var(--neon); color: #000; box-shadow: 0 0 50px var(--neon); }
+        .cta:hover { background: var(--neon); color: #000; box-shadow: 0 0 40px var(--neon); }
 
-        .hud {
-            position: absolute; font-size: 0.6rem; color: var(--neon); opacity: 0.4;
-            letter-spacing: 2px; text-transform: uppercase; display: none;
+        /* טלמטריה בצדדים - רק למחשב */
+        .telemetry {
+            position: absolute; font-size: 0.65rem; color: var(--neon); opacity: 0.3;
+            text-transform: uppercase; letter-spacing: 2px; display: none;
         }
-        @media (min-width: 1025px) {
-            .hud { display: block; }
-            .tl { top: 25px; left: 30px; text-align: left; }
-            .br { bottom: 25px; right: 30px; text-align: right; }
+        @media (min-width: 1024px) {
+            .telemetry { display: block; }
+            .tl { top: 20px; left: 25px; text-align: left; }
+            .br { bottom: 20px; right: 25px; text-align: right; }
         }
 
         @media (max-width: 768px) {
-            .interface { width: 95%; padding: 40px 15px; }
+            .interface-panel { padding: 50px 15px; width: 95%; }
+            .logo { width: 90%; }
             .headline { font-size: 1.1rem; }
-            .cta { width: 90%; text-align: center; }
+            .cta { width: 100%; padding: 18px 0; }
         }
     </style>
 </head>
@@ -137,25 +117,32 @@
 </div>
 
 <div id="main-site">
-    <div class="stars"></div>
-    <div class="nebula"></div>
+    <div class="grid-bg"></div>
 
-    <div class="interface">
-        <div class="hud tl">CORE_V1: LOADED<br>ISOLATION: ACTIVE<br>STATUS: SECURE</div>
+    <div class="interface-panel">
+        <div class="telemetry tl">
+            KERNEL_STATE: ENFORCED<br>
+            ISOLATION_SHIELD: ACTIVE<br>
+            MISSION_TYPE: INFRASTRUCTURE
+        </div>
 
-        <h1>Quantum Core OS</h1>
+        <h1>Satellite Operating System</h1>
 
         <img src="logo.png" class="logo" alt="DYON Systems">
 
         <p class="headline">
-            The foundation for <strong>Autonomous Space Missions</strong>.<br>
-            Bridging high-performance <span class="highlight">Edge-AI</span> with mission integrity through 
-            hardware-enforced isolation—from LEO to Deep Space.
+            Building the <strong>Secure Infrastructure</strong> for the NewSpace Era.<br>
+            A hybrid operating system designed to run high-performance <span class="highlight">Edge-AI</span> 
+            on satellites with <span class="highlight">Zero-Mission-Risk</span>.
         </p>
 
-        <a href="mailto:idanva13@gmail.com" class="cta">ESTABLISH CONNECTION</a>
+        <a href="mailto:contact@dyonsystems.com" class="cta">Secure Connection</a>
 
-        <div class="hud br">NODE: 01<br>MISSION: STEALTH<br>FRAME: ORBITAL</div>
+        <div class="telemetry br">
+            DYON_OS_CORE: v1.0.26<br>
+            STATUS: OPERATIONAL<br>
+            FRAME: SECURE_LINK
+        </div>
     </div>
 </div>
 
@@ -166,11 +153,10 @@
 
     const lines = [
         "> POWER SIGNAL DETECTED...",
-        "> INITIALIZING CORE KERNEL...",
-        "> VERIFYING ISOLATION LAYER... OK",
-        "> LOADING DYON_OS_V1.0.26...",
-        "> ESTABLISHING ORBITAL LINK...",
-        "> SYSTEM ONLINE. WELCOME TO DYON."
+        "> LOADING HYBRID KERNEL...",
+        "> INITIALIZING HARDWARE ISOLATION...",
+        "> VERIFYING MISSION INTEGRITY...",
+        "> DYON_OS_CORE: ONLINE."
     ];
 
     let i = 0;
@@ -180,18 +166,17 @@
             div.textContent = lines[i];
             log.appendChild(div);
             i++;
-            setTimeout(runBoot, Math.random() * 400 + 200);
+            setTimeout(runBoot, 400);
         } else {
             setTimeout(() => {
                 screen.style.opacity = '0';
                 setTimeout(() => {
                     screen.style.display = 'none';
                     site.classList.add('active');
-                }, 1200);
-            }, 800);
+                }, 800);
+            }, 500);
         }
     }
-
     window.onload = runBoot;
 </script>
 
