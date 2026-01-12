@@ -3,198 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DYON Systems | Redefining Space OS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>DYON Systems | The Future of Space OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@100;400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --dyon-blue-light: #00eaff; /* כחול בהיר זוהר */
-            --dyon-blue-dark: #00aaff;  /* כחול כהה יותר */
-            --background-dark: #020508;
-            --text-light: #e0f2f7;
-            --text-accent: #aaffff;
+            --neon-blue: #00f2ff;
+            --deep-violet: #7000ff;
+            --bg-black: #020406;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            font-family: 'Share Tech Mono', monospace; /* פונט טכני */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: var(--bg-black);
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
             overflow: hidden;
-            position: relative;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        /* רקע דינמי עם גלואו עדין */
-        .background-glow {
-            position: absolute;
-            width: 150vw; /* גדול יותר מהמסך */
-            height: 150vh;
-            background: 
-                radial-gradient(circle at 30% 70%, rgba(0, 170, 255, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 70% 30%, rgba(0, 234, 255, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(0, 234, 255, 0.02) 0%, transparent 60%);
-            animation: backgroundShift 60s infinite alternate linear; /* אנימציה איטית */
+        /* רקע כוכבים בתנועה */
+        #stars-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
             z-index: -1;
         }
 
-        @keyframes backgroundShift {
-            from { transform: translate(-25%, -25%); }
-            to { transform: translate(25%, 25%); }
-        }
-
-        /* קונטיינר מרכזי עם אפקט "ממשק" */
-        .main-interface {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 50px;
-            max-width: 900px;
-            width: 80%;
-            background: rgba(0, 0, 0, 0.4); /* כהה ושקוף יותר */
-            border: 2px solid var(--dyon-blue-dark); /* מסגרת כחולה */
-            border-radius: 15px;
-            box-shadow: 0 0 50px rgba(0, 170, 255, 0.6), inset 0 0 20px rgba(0, 170, 255, 0.3); /* גלואו כפול */
-            animation: interfaceLoad 2s ease-out forwards;
-            opacity: 0; /* מתחיל שקוף */
+        /* ריבוע זכוכית עתידני */
+        .portal-frame {
             position: relative;
-        }
-
-        @keyframes interfaceLoad {
-            from { opacity: 0; transform: translateY(30px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        /* לוגו עם אפקט טעינה/סריקה */
-        .logo-display {
-            position: relative;
-            margin-bottom: 40px;
-            animation: logoPulse 3s infinite alternate ease-in-out;
-        }
-
-        .logo-display img {
-            width: 450px; /* גדול מאוד */
-            max-width: 100%;
-            filter: drop-shadow(0 0 30px rgba(0, 234, 255, 0.8)); /* גלואו חזק */
-            opacity: 0;
-            animation: logoFadeIn 1s 1s forwards; /* מופיע אחרי שנייה */
-        }
-
-        @keyframes logoFadeIn {
-            to { opacity: 1; }
-        }
-
-        @keyframes logoPulse {
-            0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(0, 234, 255, 0.5)); }
-            50% { transform: scale(1.02); filter: drop-shadow(0 0 40px rgba(0, 234, 255, 1)); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(0, 234, 255, 0.5)); }
-        }
-
-        /* כותרות וטקסטים בסגנון ממשק */
-        .system-status {
-            font-family: 'Orbitron', sans-serif; /* פונט עתידני */
-            font-size: 1.8rem;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            color: var(--text-accent);
-            margin-bottom: 25px;
-            opacity: 0;
-            animation: textFadeIn 1s 2s forwards; /* מופיע אחרי 2 שניות */
-        }
-
-        .system-description {
-            font-size: 1.1rem;
-            line-height: 1.6;
+            width: 80%; max-width: 1100px;
+            padding: 100px 60px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(30px);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 255, 0.1);
             text-align: center;
-            max-width: 700px;
+            box-shadow: 0 0 100px rgba(0, 0, 0, 0.9);
+            overflow: hidden; /* לאפקט הברק */
+        }
+
+        /* אנימציית קו ניאון מסתובב סביב המסגרת */
+        .portal-frame::before {
+            content: ""; position: absolute; top: 0; left: -100%;
+            width: 50%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            animation: lineMove 4s linear infinite;
+        }
+
+        @keyframes lineMove {
+            0% { left: -100%; top: 0; }
+            50% { left: 100%; top: 0; }
+            100% { left: 100%; top: 100%; }
+        }
+
+        /* לוגו ענק עם הילה כפולה */
+        .main-logo {
+            width: 650px; max-width: 95%;
+            filter: drop-shadow(0 0 25px rgba(0, 242, 255, 0.4)) 
+                    drop-shadow(0 0 60px rgba(112, 0, 255, 0.2));
             margin-bottom: 40px;
-            color: var(--text-light);
-            opacity: 0;
-            animation: textFadeIn 1s 2.5s forwards; /* מופיע אחרי 2.5 שניות */
+            animation: float 6s ease-in-out infinite;
         }
 
-        .highlight-text {
-            color: var(--dyon-blue-light);
-            font-weight: 700;
-            text-shadow: 0 0 8px rgba(0, 234, 255, 0.5);
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
 
-        @keyframes textFadeIn {
-            to { opacity: 1; }
-        }
-
-        /* כפתור "Boot" דינמי */
-        .boot-button {
-            display: inline-block;
-            padding: 18px 50px;
-            background: linear-gradient(45deg, var(--dyon-blue-dark) 0%, var(--dyon-blue-light) 100%);
-            color: var(--background-dark);
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem; font-weight: 900;
+            letter-spacing: 15px;
+            background: linear-gradient(to right, #fff, var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
             text-transform: uppercase;
-            box-shadow: 0 0 25px rgba(0, 234, 255, 0.6);
-            transition: all 0.3s ease-in-out;
-            animation: buttonPulse 2s infinite alternate; /* אנימציה של כפתור פועם */
-            opacity: 0;
-            animation: buttonFadeIn 1s 3s forwards, buttonPulse 2s infinite alternate 4s; /* מופיע ואז פועם */
         }
 
-        .boot-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(0, 234, 255, 1);
-            background: linear-gradient(45deg, var(--dyon-blue-light) 0%, var(--dyon-blue-dark) 100%);
+        .desc {
+            font-size: 1.3rem; line-height: 1.8;
+            color: #a0aec0; max-width: 850px; margin: 0 auto 50px auto;
         }
 
-        @keyframes buttonFadeIn {
-            to { opacity: 1; }
+        .desc b { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+
+        /* כפתור ה-Hyperlink */
+        .hyper-btn {
+            position: relative;
+            padding: 22px 70px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900; font-size: 1.3rem;
+            color: #fff; text-decoration: none;
+            text-transform: uppercase; letter-spacing: 5px;
+            background: rgba(0, 242, 255, 0.05);
+            border: 1px solid var(--neon-blue);
+            transition: 0.5s;
+            overflow: hidden;
         }
 
-        @keyframes buttonPulse {
-            0% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 234, 255, 0.6); }
-            100% { transform: scale(1.01); box-shadow: 0 0 35px rgba(0, 234, 255, 0.9); }
+        .hyper-btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 50px var(--neon-blue);
         }
 
-        /* הערת תחתית קטנה */
-        .footer-terminal {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            font-size: 0.8rem;
-            color: rgba(0, 234, 255, 0.5);
-            letter-spacing: 1px;
-            animation: textFadeIn 1s 3.5s forwards;
-            opacity: 0;
+        /* תגיות צדדיות בסגנון קוד */
+        .side-tag {
+            position: absolute; font-size: 0.7rem; color: var(--neon-blue);
+            opacity: 0.5; font-family: monospace;
         }
+        .top-left { top: 20px; left: 30px; }
+        .bottom-right { bottom: 20px; right: 30px; }
+
     </style>
 </head>
 <body>
-    <div class="background-glow"></div>
-    
-    <div class="main-interface">
-        <div class="logo-display">
-            <img src="logo.png" alt="DYON Systems Logo">
-        </div>
 
-        <div class="system-status">SYSTEM READY FOR DEPLOYMENT</div>
+    <div id="stars-container"></div>
+
+    <div class="portal-frame">
+        <div class="side-tag top-left">[ AUTHENTICATED_ACCESS_ONLY ]</div>
         
-        <p class="system-description">
-            DYON Systems is engineering the <span class="highlight-text">Hybrid OS architecture</span> for the NewSpace era, <br>
-            enabling unprecedented <span class="highlight-text">Edge-AI performance</span> with <span class="highlight-text">zero mission-critical risk</span>.
+        <img src="logo.png" alt="DYON Systems" class="main-logo">
+        
+        <h1>Deep Space OS</h1>
+        
+        <p class="desc">
+            Standardizing the <b>Hybrid Infrastructure</b> for the next frontier. <br>
+            Isolated execution. <b>Zero-Risk</b> Edge-AI. Absolute Autonomy.
         </p>
         
-        <a href="mailto:contact@dyonsystems.com" class="boot-button">INITIATE SECURE COMMS</a>
+        <a href="mailto:contact@dyonsystems.com" class="hyper-btn">Connect</a>
+
+        <div class="side-tag bottom-right">v1.0.0 // STATUS: OPERATIONAL</div>
     </div>
 
-    <div class="footer-terminal">
-        &gt; DYON_OS // v1.0.26 | Operational Integrity Check Complete.
-    </div>
 </body>
 </html>
