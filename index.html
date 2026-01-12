@@ -3,233 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DYON Systems | Orbital Intelligence Core</title>
+    <title>DYON Systems | Quantum Core OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@200;400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon: #00f0ff;
-            --bg: #01040b;
+            --neon-blue: #00f0ff;
+            --deep-space-bg: #01040b;
+            --glow-color: rgba(0, 240, 255, 0.6);
+            --interface-border-color: rgba(0, 240, 255, 0.3);
         }
 
+        /* Base Styles */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         html, body {
             margin: 0; width: 100%; height: 100%;
-            background-color: var(--bg);
-            color: #e8f8ff;
-            font-family: 'JetBrains Mono', monospace;
-            overflow: hidden;
+            background-color: var(--deep-space-bg);
+            color: #e8f8ff; font-family: 'JetBrains Mono', monospace;
+            overflow: hidden; cursor: none; /* Custom cursor */
+            perspective: 1000px; /* Enable 3D transforms */
         }
 
-        /* ===== BOOT SCREEN (PORTAL EFFECT) ===== */
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0;
+            width: 20px; height: 20px;
+            border: 1px solid var(--neon-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+            box-shadow: 0 0 15px var(--neon-blue);
+            z-index: 10000;
+        }
+        .custom-cursor.active {
+            width: 30px; height: 30px; border-color: #fff;
+            box-shadow: 0 0 25px #fff;
+        }
+
+        /* ===== BOOT SEQUENCE SCREEN ===== */
         #boot-screen {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s;
+            position: fixed; inset: 0; background: var(--deep-space-bg);
+            z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 30px; transition: opacity 1.5s ease-out;
         }
-
         #boot-log {
-            width: 100%;
-            max-width: 500px;
-            font-size: clamp(0.7rem, 2vw, 0.9rem);
-            line-height: 1.8;
-            color: var(--neon);
-            text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+            width: 100%; max-width: 600px; font-size: clamp(0.7rem, 2vw, 0.9rem); line-height: 1.8;
+            color: var(--neon-blue); text-transform: uppercase; text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
         }
 
-        /* ===== MAIN SITE LAYOUT ===== */
+        /* ===== MAIN INTERFACE CONTAINER (3D SCENE) ===== */
         #main-site {
-            position: relative;
-            height: 100vh;
-            width: 100%;
-            opacity: 0;
-            transform: scale(1.1);
-            transition: opacity 2s ease, transform 2s cubic-bezier(0.19, 1, 0.22, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative; width: 100%; height: 100%;
+            opacity: 0; transform: scale(1.05) translateZ(-100px);
+            transition: opacity 2s ease, transform 2s cubic-bezier(0.2, 1, 0.3, 1);
+            display: flex; align-items: center; justify-content: center;
+            transform-style: preserve-3d; /* For parallax effect */
         }
+        #main-site.active { opacity: 1; transform: scale(1) translateZ(0); }
 
-        #main-site.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* BACKGROUNDS */
-        .layer { position: fixed; inset: -50%; pointer-events: none; z-index: 0; }
+        /* ===== BACKGROUND - Stars & Nebula ===== */
+        .background-layer { position: fixed; inset: -10%; pointer-events: none; }
         .stars {
             background: radial-gradient(1px 1px at 20% 30%,#fff,transparent),
-                        radial-gradient(1px 1px at 80% 70%,#fff,transparent);
-            opacity: .15; animation: drift 200s linear infinite;
+                        radial-gradient(1px 1px at 80% 70%,#fff,transparent),
+                        radial-gradient(1px 1px at 50% 50%,#fff,transparent);
+            opacity: .15; animation: drift 300s linear infinite;
         }
-        @keyframes drift { to { transform: translate(-10%, -10%); } }
-
+        @keyframes drift { to { transform: translate(-20%, -20%); } }
         .nebula {
-            background: radial-gradient(circle at 30% 40%,rgba(0,240,255,.12),transparent 40%),
-                        radial-gradient(circle at 70% 60%,rgba(120,90,255,.1),transparent 40%);
-            filter: blur(100px); z-index: -1;
+            background: radial-gradient(circle at 30% 40%,rgba(0,240,255,.15),transparent 45%),
+                        radial-gradient(circle at 70% 60%,rgba(120,90,255,.12),transparent 50%);
+            filter: blur(120px); opacity: 0.7;
         }
 
-        /* ===== INTERFACE PANEL ===== */
-        .interface {
-            position: relative;
-            width: 92%;
-            max-width: 1100px;
-            padding: clamp(40px, 8vw, 80px) clamp(20px, 5vw, 60px);
-            background: rgba(255, 255, 255, .02);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid rgba(0,240,255,.2);
-            box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            z-index: 10;
+        /* ===== DYNAMIC GRID ===== */
+        .dynamic-grid {
+            position: fixed; inset: -10%; background-image: 
+                linear-gradient(var(--interface-border-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--interface-border-color) 1px, transparent 1px);
+            background-size: 50px 50px; opacity: 0.2; pointer-events: none;
+            transition: transform 0.1s linear; /* Smooth mouse interaction */
         }
 
-        .logo { 
-            width: 550px; 
-            max-width: 100%; 
-            height: auto;
-            filter: drop-shadow(0 0 40px rgba(0,240,255,0.4));
-            margin-bottom: 40px;
+        /* ===== HOLO-INTERFACE PANEL ===== */
+        .holo-interface {
+            position: relative; width: 92%; max-width: 1100px;
+            padding: clamp(50px, 8vw, 80px) clamp(25px, 5vw, 60px);
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(40px);
+            border: 1px solid var(--interface-border-color); border-radius: 6px;
+            box-shadow: 0 0 100px var(--glow-color), inset 0 0 40px rgba(0, 240, 255, 0.15);
+            text-align: center; z-index: 10;
+            transform-style: preserve-3d; /* For inner elements */
+            transition: transform 0.1s linear; /* Smooth mouse interaction */
         }
 
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.6rem, 2.5vw, 0.8rem);
-            letter-spacing: clamp(5px, 2vw, 12px);
-            color: var(--neon);
-            text-transform: uppercase;
-            margin-bottom: 30px;
+        /* Energy Core (Inner Glow) */
+        .energy-core {
+            position: absolute; inset: 20%; border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(0, 240, 255, 0.3) 0%, transparent 70%);
+            filter: blur(30px); animation: energyPulse 5s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+        @keyframes energyPulse { 50% { transform: scale(1.05); opacity: 0.9; } }
+
+        /* Orbital Rings */
+        .orbital-ring {
+            position: absolute; inset: -40px; border: 1px dashed rgba(0,240,255,.15);
+            border-radius: 50%; animation: spin 100s linear infinite; opacity: 0.6;
+            transform-style: preserve-3d;
+        }
+        .orbital-ring::before {
+            content: ''; position: absolute; top: 50%; left: 0;
+            width: 10px; height: 10px; background: var(--neon-blue); border-radius: 50%;
+            box-shadow: 0 0 20px var(--neon-blue); transform: translateZ(5px);
+        }
+        .ring-2 { inset: -80px; animation-duration: 150s; transform: rotateX(60deg); }
+        .ring-3 { inset: -120px; animation-duration: 200s; transform: rotateY(60deg); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* System Scanline */
+        .scanline {
+            position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(to right, transparent, var(--neon-blue), transparent);
+            animation: scan 10s linear infinite; opacity: 0.8;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+        @keyframes scan { from { top: -10%; } to { top: 110%; } }
+
+        /* Logo & Text */
+        .logo-img {
+            width: 580px; max-width: 100%; height: auto; margin-bottom: 40px;
+            filter: drop-shadow(0 0 60px rgba(0, 240, 255, 0.6));
+            animation: logoFloat 10s ease-in-out infinite;
+        }
+        @keyframes logoFloat { 50% { transform: translateY(-8px); } }
+
+        .status-tag {
+            font-family: 'Orbitron', sans-serif; font-size: clamp(0.7rem, 2vw, 0.85rem);
+            letter-spacing: clamp(4px, 2vw, 8px); color: var(--neon-blue); margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
         }
 
-        .headline {
-            font-size: clamp(1rem, 4vw, 1.4rem);
-            line-height: 1.6;
-            font-weight: 200;
-            max-width: 800px;
-            margin: 0 auto 50px;
-            color: #cbd5e1;
+        .main-headline {
+            font-size: clamp(1.1rem, 3.5vw, 1.6rem); line-height: 1.6; font-weight: 200;
+            max-width: 900px; margin: 0 auto 50px; color: #cbd5e1;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        }
+        .highlight { color: #fff; font-weight: 700; border-bottom: 1px dashed var(--neon-blue); }
+
+        .cta-button {
+            display: inline-block; padding: 20px clamp(40px, 10vw, 70px);
+            border: 1px solid var(--neon-blue); font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.8rem, 2.5vw, 1rem); letter-spacing: 5px; text-decoration: none;
+            color: #fff; background: rgba(0, 240, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+        .cta-button:hover {
+            background: var(--neon-blue); color: var(--deep-space-bg);
+            box-shadow: 0 0 80px var(--neon-blue); transform: translateY(-3px) translateZ(10px);
+            letter-spacing: 7px;
         }
 
-        .highlight { color: #fff; font-weight: 700; border-bottom: 1px solid var(--neon); }
-
-        .cta {
-            display: inline-block;
-            padding: 18px clamp(30px, 8vw, 60px);
-            border: 1px solid var(--neon);
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.7rem, 2vw, 0.9rem);
-            letter-spacing: 4px;
-            text-decoration: none;
-            color: #fff;
-            background: rgba(0,240,255,0.05);
-            transition: all 0.4s ease;
+        /* HUD Telemetry */
+        .hud-display {
+            position: absolute; font-size: 0.65rem; color: var(--neon-blue);
+            opacity: 0.35; letter-spacing: 2px;
+            display: none; /* Default hidden for small screens */
+            text-align: left;
+            padding: 15px 20px;
+            border: 1px solid var(--interface-border-color);
+            background: rgba(0,0,0,0.3);
+            box-shadow: 0 0 20px rgba(0,240,255,0.1);
+            border-radius: 3px;
+        }
+        @media (min-width: 900px) {
+            .hud-display { display: block; }
+            .hud-top-left { top: 20px; left: 20px; }
+            .hud-bottom-right { bottom: 20px; right: 20px; text-align: right; }
         }
 
-        .cta:hover { background: var(--neon); color: #000; box-shadow: 0 0 50px var(--neon); }
-
-        /* HUD ELEMENTS */
-        .hud {
-            position: absolute;
-            font-size: 0.6rem;
-            color: var(--neon);
-            opacity: 0.4;
-            letter-spacing: 2px;
-            display: none; /* Hidden on mobile by default */
-        }
-
-        @media (min-width: 1024px) {
-            .hud { display: block; }
-            .tl { top: 25px; left: 30px; text-align: left; }
-            .br { bottom: 25px; right: 30px; text-align: right; }
-        }
-
-        @media (max-width: 480px) {
-            .interface { padding: 50px 15px; border-radius: 0; border-left: none; border-right: none; }
-            .logo { margin-bottom: 30px; }
-            .headline { font-size: 1.1rem; }
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .holo-interface {
+                padding: clamp(30px, 8vw, 60px) clamp(15px, 5vw, 30px);
+                border-radius: 0; border-left: none; border-right: none;
+            }
+            .logo-img { margin-bottom: 30px; }
+            .status-tag { letter-spacing: 4px; }
+            .main-headline { font-size: clamp(1rem, 3.5vw, 1.2rem); }
+            .cta-button { width: 90%; padding: 15px 0; }
         }
     </style>
 </head>
 <body>
 
-<div id="boot-screen">
-    <div id="boot-log"></div>
-</div>
+    <div class="custom-cursor"></div>
 
-<div id="main-site">
-    <div class="layer stars"></div>
-    <div class="layer nebula"></div>
+    <div id="boot-screen">
+        <div id="boot-log"></div>
+    </div>
 
-    <div class="interface">
-        <div class="hud tl">
-            CORE: STABLE<br>TRUST: HARDWARE<br>NET: ENCRYPTED
-        </div>
+    <div id="main-site">
+        <div class="background-layer stars"></div>
+        <div class="background-layer nebula"></div>
+        <div class="dynamic-grid"></div>
 
-        <h1>Satellite Operating Systems</h1>
+        <div class="holo-interface">
+            <div class="energy-core"></div>
+            <div class="orbital-ring"></div>
+            <div class="orbital-ring ring-2"></div>
+            <div class="orbital-ring ring-3"></div>
+            <div class="scanline"></div>
 
-        <img src="logo.png" class="logo" alt="DYON Systems">
+            <div class="hud-display hud-top-left">
+                SYSTEM_ID: DYON_CORE_V2.0<br>
+                KERNEL_STATUS: ACTIVE<br>
+                TRUST_MODEL: L-10_SECURE<br>
+                ENVIRONMENT: ORBITAL
+            </div>
 
-        <p class="headline">
-            Standardizing the <span class="highlight">Orbital OS Layer</span>.<br>
-            Bridging Edge-AI with zero-risk mission integrity through 
-            hardware-enforced isolation.
-        </p>
+            <p class="status-tag">QUANTUM CORE INITIATED</p>
+            
+            <img src="logo.png" class="logo-img" alt="DYON Systems">
 
-        <a href="mailto:idanva13@gmail.com" class="cta">ESTABLISH CONNECTION</a>
+            <p class="main-headline">
+                Defining the <span class="highlight">Next-Generation Orbital OS</span> for Space Autonomy.<br>
+                Engineered for <span class="highlight">Zero-Failure Environments</span>: <br>
+                Integrating Adaptive Edge-AI with Hardware-Enforced Mission Resilience.
+            </p>
 
-        <div class="hud br">
-            NODE: DYON-01<br>STATUS: ACTIVE<br>FRAME: LEO-ORBIT
+            <a href="mailto:idanva13@gmail.com" class="cta-button">ESTABLISH QUANTUM LINK</a>
+
+            <div class="hud-display hud-bottom-right">
+                NODE_HEALTH: 100%<br>
+                AI_PROTOCOL: ONLINE<br>
+                COMM_LINK: SECURE<br>
+                TARGET_ALTITUDE: GEO
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    const log = document.getElementById('boot-log');
-    const screen = document.getElementById('boot-screen');
-    const site = document.getElementById('main-site');
+    <script>
+        const logContainer = document.getElementById('boot-log');
+        const bootScreen = document.getElementById('boot-screen');
+        const mainSite = document.getElementById('main-site');
+        const cursor = document.querySelector('.custom-cursor');
+        const dynamicGrid = document.querySelector('.dynamic-grid');
+        const holoInterface = document.querySelector('.holo-interface');
 
-    const lines = [
-        "> INITIALIZING POWER SIGNAL...",
-        "> LOADING KERNEL MODULES... DONE",
-        "> VERIFYING HARDWARE TRUST LAYER...",
-        "> ISOLATION SHIELD: ACTIVE",
-        "> SYNCING ORBITAL TELEMETRY...",
-        "> LATENCY: 3.2ms (OPTIMAL)",
-        "> SYSTEM ONLINE. WELCOME TO DYON."
-    ];
+        // Boot sequence messages
+        const bootSequence = [
+            "> DYON QUANTUM CORE: ACTIVATED",
+            "> INIT: DIAGNOSTICS SEQUENCE... OK",
+            "> KERNEL_MODULES: LOADING... [+++]",
+            "> ISOLATION_MATRIX: VERIFIED. ACTIVE.",
+            "> ORBITAL_TELEMETRY: SYNCHRONIZING...",
+            "  > LATENCY: <0.5ms (OPTIMAL)",
+            "> AI_PROTOCOLS: ENGAGED.",
+            "> SYSTEM_ONLINE. WELCOME TO DYON.",
+            " " // Final empty line for cursor to appear alone
+        ];
 
-    let i = 0;
-    function type() {
-        if (i < lines.length) {
-            const div = document.createElement('div');
-            div.textContent = lines[i];
-            log.appendChild(div);
-            i++;
-            setTimeout(type, Math.random() * 400 + 200);
-        } else {
-            setTimeout(transition, 800);
+        let lineIndex = 0;
+        function runBootSequence() {
+            if (lineIndex < bootSequence.length) {
+                const line = document.createElement('div');
+                line.textContent = bootSequence[lineIndex];
+                logContainer.appendChild(line);
+                lineIndex++;
+                setTimeout(runBootSequence, Math.random() * 400 + 200); // Variable speed for realism
+            } else {
+                // After boot, start the transition
+                setTimeout(transitionToMainSite, 1200);
+            }
         }
-    }
 
-    function transition() {
-        screen.style.opacity = '0';
-        setTimeout(() => {
-            screen.style.visibility = 'hidden';
-            site.classList.add('active');
-        }, 600);
-    }
+        function transitionToMainSite() {
+            bootScreen.style.opacity = '0';
+            mainSite.classList.add('active'); // Start main site animation
+            setTimeout(() => {
+                bootScreen.style.display = 'none'; // Remove boot screen after fade
+            }, 1500); // Match boot screen fade duration
+        }
 
-    window.onload = type;
-</script>
+        // Mouse/Touch Interaction for 3D effect
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+        const interpFactor = 0.1; // Smoothness of movement
+
+        function updateTransforms() {
+            // Apply parallax to main site (background layers)
+            const siteTransformX = (targetX / window.innerWidth - 0.5) * -30; // -30px max shift
+            const siteTransformY = (targetY / window.innerHeight - 0.5) * -30;
+            mainSite.style.transform = `scale(1) translateZ(0) rotateY(${siteTransformX * 0.2}deg) rotateX(${siteTransformY * -0.2}deg)`;
+
+            // Apply slight counter-parallax to interface for depth
+            const interfaceTransformX = (targetX / window.innerWidth - 0.5) * 20;
+            const interfaceTransformY = (targetY / window.innerHeight - 0.5) * 20;
+            holoInterface.style.transform = `translate3d(${interfaceTransformX}px, ${interfaceTransformY}px, 0px)`;
+
+            // Grid parallax
+            const gridShiftX = (targetX / window.innerWidth - 0.5) * 50;
+            const gridShiftY = (targetY / window.innerHeight - 0.5) * 50;
+            dynamicGrid.style.transform = `translate3d(${gridShiftX}px, ${gridShiftY}px, 0)`;
+
+            requestAnimationFrame(updateTransforms);
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+        });
+
+        document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
+        document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+        document.addEventListener('mousedown', () => cursor.classList.add('active'));
+        document.addEventListener('mouseup', () => cursor.classList.remove('active'));
+
+        // Start everything
+        window.onload = () => {
+            runBootSequence();
+            requestAnimationFrame(updateTransforms); // Start parallax animation loop
+        };
+    </script>
 
 </body>
 </html>
