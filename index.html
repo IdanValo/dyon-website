@@ -2,114 +2,160 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DYON Systems | Orbital Intelligence Core</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@200;400&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon: #00f0ff;
-            --violet: #7a5cff;
             --bg: #01040b;
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         html, body {
             margin: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #08162f 0%, var(--bg) 70%);
+            background-color: var(--bg);
             color: #e8f8ff;
             font-family: 'JetBrains Mono', monospace;
             overflow: hidden;
         }
 
-        /* ===== BOOT LOADER SCREEN ===== */
+        /* ===== BOOT SCREEN (PORTAL EFFECT) ===== */
         #boot-screen {
             position: fixed;
             inset: 0;
             background: var(--bg);
-            z-index: 1000;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 30px;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s;
         }
 
         #boot-log {
             width: 100%;
-            max-width: 600px;
-            font-size: 0.9rem;
-            line-height: 1.6;
+            max-width: 500px;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            line-height: 1.8;
             color: var(--neon);
             text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
         }
 
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 15px;
-            background: var(--neon);
-            margin-left: 5px;
-            animation: blink 0.8s infinite;
-        }
-
-        @keyframes blink { 50% { opacity: 0; } }
-
-        /* ===== MAIN INTERFACE (HIDDEN INITIALLY) ===== */
+        /* ===== MAIN SITE LAYOUT ===== */
         #main-site {
+            position: relative;
+            height: 100vh;
+            width: 100%;
             opacity: 0;
-            visibility: hidden;
-            transition: opacity 1.5s ease;
+            transform: scale(1.1);
+            transition: opacity 2s ease, transform 2s cubic-bezier(0.19, 1, 0.22, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* ===== COSMIC DEPTH ===== */
-        .layer { position: fixed; inset: -50%; pointer-events: none; }
+        #main-site.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* BACKGROUNDS */
+        .layer { position: fixed; inset: -50%; pointer-events: none; z-index: 0; }
         .stars {
             background: radial-gradient(1px 1px at 20% 30%,#fff,transparent),
-                        radial-gradient(1px 1px at 80% 70%,#fff,transparent),
-                        radial-gradient(1px 1px at 50% 50%,#fff,transparent);
-            opacity: .15; animation: drift 240s linear infinite;
+                        radial-gradient(1px 1px at 80% 70%,#fff,transparent);
+            opacity: .15; animation: drift 200s linear infinite;
         }
-        @keyframes drift { to { transform: translate(-1200px,-1200px); } }
+        @keyframes drift { to { transform: translate(-10%, -10%); } }
 
         .nebula {
-            background: radial-gradient(circle at 30% 40%,rgba(0,240,255,.18),transparent 45%),
-                        radial-gradient(circle at 70% 60%,rgba(120,90,255,.15),transparent 50%);
-            filter: blur(140px); animation: nebula 26s ease-in-out infinite alternate;
+            background: radial-gradient(circle at 30% 40%,rgba(0,240,255,.12),transparent 40%),
+                        radial-gradient(circle at 70% 60%,rgba(120,90,255,.1),transparent 40%);
+            filter: blur(100px); z-index: -1;
         }
-        @keyframes nebula { from { opacity: .35; } to { opacity: .9; } }
 
-        /* ===== CORE UI ===== */
-        .core { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 5; }
+        /* ===== INTERFACE PANEL ===== */
         .interface {
-            position: relative; width: 90%; max-width: 1200px; padding: 90px 60px;
-            background: rgba(255, 255, 255, .03); backdrop-filter: blur(50px);
-            border: 1px solid rgba(0,240,255,.25);
-            box-shadow: 0 0 200px rgba(0,240,255,.25), inset 0 0 80px rgba(0,240,255,.08);
+            position: relative;
+            width: 92%;
+            max-width: 1100px;
+            padding: clamp(40px, 8vw, 80px) clamp(20px, 5vw, 60px);
+            background: rgba(255, 255, 255, .02);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(0,240,255,.2);
+            box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
             text-align: center;
+            z-index: 10;
         }
 
-        .logo { width: 620px; max-width: 95%; filter: drop-shadow(0 0 120px rgba(0,240,255,.7)); animation: logoFloat 12s ease-in-out infinite; }
-        @keyframes logoFloat { 50% { transform: translateY(-10px); } }
+        .logo { 
+            width: 550px; 
+            max-width: 100%; 
+            height: auto;
+            filter: drop-shadow(0 0 40px rgba(0,240,255,0.4));
+            margin-bottom: 40px;
+        }
 
-        .headline { font-size: 1.65rem; line-height: 1.6; font-weight: 300; margin: 50px auto 70px; }
-        .highlight { color: var(--neon); text-shadow: 0 0 20px rgba(0,240,255,.6); }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.6rem, 2.5vw, 0.8rem);
+            letter-spacing: clamp(5px, 2vw, 12px);
+            color: var(--neon);
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .headline {
+            font-size: clamp(1rem, 4vw, 1.4rem);
+            line-height: 1.6;
+            font-weight: 200;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            color: #cbd5e1;
+        }
+
+        .highlight { color: #fff; font-weight: 700; border-bottom: 1px solid var(--neon); }
 
         .cta {
-            display: inline-block; padding: 22px 70px; border: 1px solid var(--neon);
-            font-family: 'Orbitron', sans-serif; letter-spacing: 5px; text-decoration: none;
-            color: #fff; transition: .5s ease;
+            display: inline-block;
+            padding: 18px clamp(30px, 8vw, 60px);
+            border: 1px solid var(--neon);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            letter-spacing: 4px;
+            text-decoration: none;
+            color: #fff;
+            background: rgba(0,240,255,0.05);
+            transition: all 0.4s ease;
         }
-        .cta:hover { background: var(--neon); color: #01040b; box-shadow: 0 0 80px var(--neon); }
 
-        .hud { position: absolute; font-size: .65rem; color: var(--neon); opacity: .35; letter-spacing: 2px; }
-        .tl { top: 22px; left: 26px; text-align: left; }
-        .br { bottom: 22px; right: 26px; text-align: right; }
+        .cta:hover { background: var(--neon); color: #000; box-shadow: 0 0 50px var(--neon); }
 
-        @media(max-width:768px) {
-            .interface { padding: 50px 20px; }
-            .headline { font-size: 1.15rem; }
-            .hud { display: none; }
+        /* HUD ELEMENTS */
+        .hud {
+            position: absolute;
+            font-size: 0.6rem;
+            color: var(--neon);
+            opacity: 0.4;
+            letter-spacing: 2px;
+            display: none; /* Hidden on mobile by default */
+        }
+
+        @media (min-width: 1024px) {
+            .hud { display: block; }
+            .tl { top: 25px; left: 30px; text-align: left; }
+            .br { bottom: 25px; right: 30px; text-align: right; }
+        }
+
+        @media (max-width: 480px) {
+            .interface { padding: 50px 15px; border-radius: 0; border-left: none; border-right: none; }
+            .logo { margin-bottom: 30px; }
+            .headline { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -117,84 +163,72 @@
 
 <div id="boot-screen">
     <div id="boot-log"></div>
-    <div class="cursor"></div>
 </div>
 
 <div id="main-site">
     <div class="layer stars"></div>
     <div class="layer nebula"></div>
 
-    <div class="core">
-        <div class="interface">
-            <div class="hud tl">
-                CORE_STATE: STABLE<br>
-                AUTONOMY: ACTIVE<br>
-                TRUST_MODEL: HARDWARE
-            </div>
+    <div class="interface">
+        <div class="hud tl">
+            CORE: STABLE<br>TRUST: HARDWARE<br>NET: ENCRYPTED
+        </div>
 
-            <div style="font-family:'Orbitron',sans-serif; letter-spacing:8px; font-size:.7rem; color:var(--neon); opacity:.75; margin-bottom:30px;">
-                ORBITAL INTELLIGENCE ONLINE
-            </div>
+        <h1>Satellite Operating Systems</h1>
 
-            <img src="logo.png" class="logo" alt="DYON Systems">
+        <img src="logo.png" class="logo" alt="DYON Systems">
 
-            <p class="headline">
-                Standardizing <span class="highlight">Satellite Operating Systems</span> 
-                for a future beyond Earth.<br><br>
-                Autonomous execution, hardware-enforced trust, 
-                and resilience engineered 
-                for environments where failure is not an option.
-            </p>
+        <p class="headline">
+            Standardizing the <span class="highlight">Orbital OS Layer</span>.<br>
+            Bridging Edge-AI with zero-risk mission integrity through 
+            hardware-enforced isolation.
+        </p>
 
-            <a href="mailto:contact@dyonsystems.com" class="cta">Open Orbital Channel</a>
+        <a href="mailto:idanva13@gmail.com" class="cta">ESTABLISH CONNECTION</a>
 
-            <div class="hud br">
-                NODE: DYON-CORE-01<br>
-                FRAME: ORBITAL
-            </div>
+        <div class="hud br">
+            NODE: DYON-01<br>STATUS: ACTIVE<br>FRAME: LEO-ORBIT
         </div>
     </div>
 </div>
 
 <script>
-    const logContainer = document.getElementById('boot-log');
-    const bootScreen = document.getElementById('boot-screen');
-    const mainSite = document.getElementById('main-site');
+    const log = document.getElementById('boot-log');
+    const screen = document.getElementById('boot-screen');
+    const site = document.getElementById('main-site');
 
-    const bootSequence = [
-        "> POWER SIGNAL DETECTED...",
-        "> INITIALIZING CORE KERNEL...",
-        "> CHECKING MEMORY BANKS... OK",
-        "> VERIFYING ISOLATION LAYER... OK",
-        "> LOADING DYON_OS_V1.0.26...",
-        "> ESTABLISHING ORBITAL LINK...",
-        "> LATENCY: 3.2ms (SECURE)",
-        "> AUTHENTICATING HARDWARE TRUST...",
-        "> SYSTEM ONLINE."
+    const lines = [
+        "> INITIALIZING POWER SIGNAL...",
+        "> LOADING KERNEL MODULES... DONE",
+        "> VERIFYING HARDWARE TRUST LAYER...",
+        "> ISOLATION SHIELD: ACTIVE",
+        "> SYNCING ORBITAL TELEMETRY...",
+        "> LATENCY: 3.2ms (OPTIMAL)",
+        "> SYSTEM ONLINE. WELCOME TO DYON."
     ];
 
-    let lineIndex = 0;
-
-    function runBoot() {
-        if (lineIndex < bootSequence.length) {
-            const line = document.createElement('div');
-            line.textContent = bootSequence[lineIndex];
-            logContainer.appendChild(line);
-            lineIndex++;
-            
-            // מהירות טעינה משתנה למראה ריאליסטי
-            setTimeout(runBoot, Math.random() * 600 + 300);
+    let i = 0;
+    function type() {
+        if (i < lines.length) {
+            const div = document.createElement('div');
+            div.textContent = lines[i];
+            log.appendChild(div);
+            i++;
+            setTimeout(type, Math.random() * 400 + 200);
         } else {
-            // סיום האתחול
-            setTimeout(() => {
-                bootScreen.style.display = 'none';
-                mainSite.style.visibility = 'visible';
-                mainSite.style.opacity = '1';
-            }, 1000);
+            setTimeout(transition, 800);
         }
     }
 
-    window.onload = runBoot;
+    function transition() {
+        screen.style.opacity = '0';
+        setTimeout(() => {
+            screen.style.visibility = 'hidden';
+            site.classList.add('active');
+        }, 600);
+    }
+
+    window.onload = type;
 </script>
 
 </body>
