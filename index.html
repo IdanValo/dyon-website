@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DYON Systems | Next-Gen Hybrid Satellite OS</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
+    
     <style>
         :root { 
             --accent: #ff8c00; 
@@ -95,7 +98,7 @@
             color: #fff; 
             font-weight: 700; 
             border-bottom: 1px solid var(--accent);
-            white-space: nowrap; /* מונע שבירה של המילה באמצע */
+            white-space: nowrap;
         }
 
         .cta {
@@ -106,6 +109,7 @@
         }
         .cta:hover { background: #fff; box-shadow: 0 0 40px rgba(255, 140, 0, 0.3); }
 
+        /* ===== HUD ELEMENTS ===== */
         .hud {
             position: absolute; font-size: 10px; color: var(--accent); 
             opacity: 0.4; font-family: monospace;
@@ -113,9 +117,27 @@
         .tl { top: 20px; left: 25px; text-align: left; }
         .br { bottom: 20px; right: 25px; text-align: right; }
 
+        /* אייקון לינקדאין בפינה */
+        .social-link {
+            position: absolute;
+            bottom: 20px;
+            left: 25px;
+            color: var(--accent);
+            font-size: 20px;
+            text-decoration: none;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+        .social-link:hover {
+            opacity: 1;
+            filter: drop-shadow(0 0 10px var(--accent));
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 768px) {
             .container { border: none; background: transparent; padding-top: 60px; }
-            .hud { display: none; }
+            .hud, .social-link { display: none; } /* במובייל מסתירים כדי למנוע עומס */
             .cta { width: 100%; padding: 18px 0; }
         }
     </style>
@@ -152,6 +174,10 @@
             v1.0.26_STABLE<br>
             LOC: LEO_FRAME<br>
             MODE: SECURE_OS
+        </div>
+
+        <a href="https://www.linkedin.com/showcase/dyon-systems" target="_blank" class="social-link" title="Visit DYON Systems on LinkedIn">
+            <i class="fa-brands fa-linkedin"></i>
         </div>
     </div>
 </div>
