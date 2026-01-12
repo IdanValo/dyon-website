@@ -3,141 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DYON Systems | The Future of Space OS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@100;400&display=swap" rel="stylesheet">
+    <title>DYON Systems | Quantum OS Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-blue: #00f2ff;
-            --deep-violet: #7000ff;
-            --bg-black: #020406;
+            --primary-glow: #00eaff; /* תכלת זוהר */
+            --secondary-glow: #00aaff; /* כחול כהה יותר */
+            --background-deep: #020508;
+            --text-color: #e0f2f7;
+            --glass-alpha: 0.1; /* שקיפות זכוכית */
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background: var(--bg-black);
-            color: #fff;
-            font-family: 'JetBrains Mono', monospace;
-            overflow: hidden;
+            background-color: var(--background-deep);
+            color: var(--text-color);
+            font-family: 'Share Tech Mono', monospace;
             display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            position: relative;
+            /* רעש דיגיטלי קל על כל המסך */
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKms/AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABZJREFUeNpiYGBgaGCAMwMDQ0AEAAQYAgB3u00U03iQ2wAAAABJRU5ErkJggg==');
+            background-repeat: repeat;
+            animation: subtleNoise 10s infinite alternate; /* אנימציה עדינה לרעש */
         }
 
-        /* רקע כוכבים בתנועה */
-        #stars-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+        @keyframes subtleNoise {
+            from { background-position: 0 0; }
+            to { background-position: 10px 10px; }
+        }
+
+        /* רקע חלקיקים דינמי */
+        .particles-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 15% 85%, rgba(0, 234, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 15%, rgba(0, 170, 255, 0.08) 0%, transparent 40%);
+            animation: particleDrift 120s infinite linear;
             z-index: -1;
         }
 
-        /* ריבוע זכוכית עתידני */
-        .portal-frame {
+        @keyframes particleDrift {
+            from { transform: translate(0, 0); }
+            to { transform: translate(-20%, -20%); }
+        }
+
+        /* הממשק הראשי - ריבוע זכוכית זוהר */
+        .quantum-interface {
             position: relative;
-            width: 80%; max-width: 1100px;
-            padding: 100px 60px;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(30px);
-            border-radius: 20px;
-            border: 1px solid rgba(0, 242, 255, 0.1);
+            width: 90%; max-width: 1000px; /* הגדלה דרמטית */
+            padding: 80px 60px;
+            background: rgba(255, 255, 255, var(--glass-alpha));
+            backdrop-filter: blur(40px); /* טשטוש חזק יותר */
+            border-radius: 30px;
+            border: 2px solid var(--secondary-glow); /* מסגרת עבה יותר */
+            box-shadow: 
+                0 0 100px rgba(0, 234, 255, 0.5), /* גלואו חיצוני כחול בהיר */
+                inset 0 0 50px rgba(0, 170, 255, 0.3); /* גלואו פנימי כחול כהה */
             text-align: center;
-            box-shadow: 0 0 100px rgba(0, 0, 0, 0.9);
-            overflow: hidden; /* לאפקט הברק */
+            opacity: 0;
+            animation: interfaceBoot 2s ease-out forwards; /* אנימציית טעינה של הממשק */
         }
 
-        /* אנימציית קו ניאון מסתובב סביב המסגרת */
-        .portal-frame::before {
-            content: ""; position: absolute; top: 0; left: -100%;
-            width: 50%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
-            animation: lineMove 4s linear infinite;
+        /* אפקט הברק על הזכוכית - כשהעכבר זז */
+        .quantum-interface::after {
+            content: "";
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.05) 50%, transparent);
+            transform: translateX(-100%);
+            animation: glassShine 8s infinite ease-out; /* ברק אינסופי */
+            pointer-events: none; /* כדי לא להפריע ללחיצות */
         }
 
-        @keyframes lineMove {
-            0% { left: -100%; top: 0; }
-            50% { left: 100%; top: 0; }
-            100% { left: 100%; top: 100%; }
+        @keyframes interfaceBoot {
+            from { opacity: 0; transform: scale(0.9) translateY(50px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* לוגו ענק עם הילה כפולה */
-        .main-logo {
-            width: 650px; max-width: 95%;
-            filter: drop-shadow(0 0 25px rgba(0, 242, 255, 0.4)) 
-                    drop-shadow(0 0 60px rgba(112, 0, 255, 0.2));
-            margin-bottom: 40px;
-            animation: float 6s ease-in-out infinite;
+        @keyframes glassShine {
+            0% { transform: translateX(-100%) rotate(5deg); }
+            50% { transform: translateX(100%) rotate(5deg); }
+            100% { transform: translateX(-100%) rotate(5deg); }
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+
+        /* לוגו הולוגרפי / טוען */
+        .logo-hologram {
+            position: relative;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: logoAppear 1s 1.5s forwards; /* מופיע אחרי טעינת הממשק */
+        }
+        .logo-hologram img {
+            width: 580px; /* לוגו מפלצתי */
+            max-width: 90%;
+            filter: drop-shadow(0 0 40px var(--primary-glow)) 
+                    drop-shadow(0 0 80px rgba(0, 234, 255, 0.3)); /* גלואו מטורף */
+            animation: logoPulse 4s infinite alternate ease-in-out; /* פעימה אינסופית */
         }
 
-        h1 {
+        @keyframes logoAppear {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes logoPulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 40px var(--primary-glow)); }
+            50% { transform: scale(1.02); filter: drop-shadow(0 0 60px var(--primary-glow)) drop-shadow(0 0 100px rgba(0, 234, 255, 0.4)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 40px var(--primary-glow)); }
+        }
+
+        /* כותרות בסגנון טעינת קונסולה */
+        .system-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 2.2rem; font-weight: 900;
-            letter-spacing: 15px;
-            background: linear-gradient(to right, #fff, var(--neon-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
+            letter-spacing: 12px;
             text-transform: uppercase;
+            color: var(--primary-glow);
+            text-shadow: 0 0 20px rgba(0, 234, 255, 0.8);
+            margin-bottom: 35px;
+            overflow: hidden; /* כדי שאפקט הטיפוגרפיה יעבוד */
+            white-space: nowrap;
+            opacity: 0;
+            animation: typing 2s steps(40, end) 2.5s forwards, cursorBlink 0.75s step-end infinite 2.5s;
+        }
+        /* אפקט ה"הקלדה" */
+        @keyframes typing {
+            from { width: 0; opacity: 0; }
+            to { width: 100%; opacity: 1; }
+        }
+        /* סמן הקלדה */
+        @keyframes cursorBlink {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--primary-glow); }
         }
 
-        .desc {
-            font-size: 1.3rem; line-height: 1.8;
-            color: #a0aec0; max-width: 850px; margin: 0 auto 50px auto;
+
+        .system-description {
+            font-size: 1.25rem; line-height: 1.7;
+            max-width: 800px; margin: 0 auto 60px auto;
+            color: var(--text-color);
+            opacity: 0;
+            animation: fadeIn 1s 4.5s forwards; /* מופיע אחרי הכותרת */
+        }
+        .system-description .highlight {
+            color: var(--primary-glow);
+            text-shadow: 0 0 10px rgba(0, 234, 255, 0.5);
         }
 
-        .desc b { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* כפתור ה-Hyperlink */
-        .hyper-btn {
-            position: relative;
-            padding: 22px 70px;
+        /* כפתור אינטראקטיבי - מגיב למעבר עכבר */
+        .interact-button {
+            display: inline-block;
+            padding: 25px 70px;
+            background: linear-gradient(45deg, var(--secondary-glow) 0%, var(--primary-glow) 100%);
+            color: var(--background-deep);
+            text-decoration: none;
+            border-radius: 10px;
             font-family: 'Orbitron', sans-serif;
-            font-weight: 900; font-size: 1.3rem;
-            color: #fff; text-decoration: none;
-            text-transform: uppercase; letter-spacing: 5px;
-            background: rgba(0, 242, 255, 0.05);
-            border: 1px solid var(--neon-blue);
-            transition: 0.5s;
-            overflow: hidden;
+            font-weight: 900; font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            box-shadow: 0 0 30px rgba(0, 234, 255, 0.7);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* מעבר חלק */
+            animation: buttonPulse 3s infinite alternate ease-in-out 5s; /* פעימה אינסופית */
+            opacity: 0;
+            animation: fadeIn 1s 5s forwards, buttonPulse 3s infinite alternate ease-in-out 6s;
         }
 
-        .hyper-btn:hover {
-            background: var(--neon-blue);
-            color: #000;
-            box-shadow: 0 0 50px var(--neon-blue);
+        .interact-button:hover {
+            transform: scale(1.08) rotateX(5deg);
+            box-shadow: 0 0 60px var(--primary-glow), 0 0 120px rgba(0, 234, 255, 0.5);
+            background: linear-gradient(45deg, var(--primary-glow) 0%, var(--secondary-glow) 100%);
         }
 
-        /* תגיות צדדיות בסגנון קוד */
-        .side-tag {
-            position: absolute; font-size: 0.7rem; color: var(--neon-blue);
-            opacity: 0.5; font-family: monospace;
+        /* הערת תחתית קטנה */
+        .console-footer {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: rgba(0, 234, 255, 0.6);
+            letter-spacing: 2px;
+            animation: fadeIn 1s 6s forwards;
+            opacity: 0;
         }
-        .top-left { top: 20px; left: 30px; }
-        .bottom-right { bottom: 20px; right: 30px; }
 
     </style>
 </head>
 <body>
+    <div class="particles-bg"></div>
+    
+    <div class="quantum-interface">
+        <div class="logo-hologram">
+            <img src="logo.png" alt="DYON Systems Logo">
+        </div>
 
-    <div id="stars-container"></div>
-
-    <div class="portal-frame">
-        <div class="side-tag top-left">[ AUTHENTICATED_ACCESS_ONLY ]</div>
+        <h1 class="system-title">Initiate Orbital Protocol</h1>
         
-        <img src="logo.png" alt="DYON Systems" class="main-logo">
-        
-        <h1>Deep Space OS</h1>
-        
-        <p class="desc">
-            Standardizing the <b>Hybrid Infrastructure</b> for the next frontier. <br>
-            Isolated execution. <b>Zero-Risk</b> Edge-AI. Absolute Autonomy.
+        <p class="system-description">
+            DYON Systems unveils the <span class="highlight">Quantum-Secured Hybrid OS</span> for <span class="highlight">Unprecedented Autonomy</span>. <br>
+            Achieve <span class="highlight">Zero-Exploitation AI</span> and <span class="highlight">Mission Assurance</span> in the hostile cosmos.
         </p>
         
-        <a href="mailto:contact@dyonsystems.com" class="hyper-btn">Connect</a>
-
-        <div class="side-tag bottom-right">v1.0.0 // STATUS: OPERATIONAL</div>
+        <a href="mailto:contact@dyonsystems.com" class="interact-button">Access Control Nexus</a>
     </div>
 
+    <div class="console-footer">
+        // DYON_OS // v2.1.27 // All Systems Nominal
+    </div>
 </body>
 </html>
