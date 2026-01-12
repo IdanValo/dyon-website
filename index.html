@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DYON Systems | The Next-Gen Satellite Operating System</title>
+<title>DYON Systems | Orbital Intelligence Core</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@100;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@200;400&display=swap" rel="stylesheet">
 
 <style>
 :root{
-    --neon:#00eaff;
-    --bg:#020610;
-    --border:rgba(0,234,255,.25);
+    --neon:#00f0ff;
+    --violet:#7a5cff;
+    --bg:#01040b;
 }
 
 *{box-sizing:border-box}
@@ -20,238 +20,228 @@ html,body{
     margin:0;
     width:100%;
     height:100%;
-    background:radial-gradient(circle at center,#081a3a 0%,var(--bg) 70%);
-    color:#e0f2f7;
+    background:radial-gradient(circle at center,#08162f 0%,var(--bg) 70%);
+    color:#e8f8ff;
     font-family:'JetBrains Mono',monospace;
     overflow:hidden;
 }
 
-/* ===== STARFIELD (DEPTH) ===== */
-.stars,.stars::after,.stars::before{
+/* ===== COSMIC DEPTH ===== */
+.layer{
     position:fixed;
-    inset:-100%;
+    inset:-50%;
+    pointer-events:none;
+}
+.stars{
     background:
         radial-gradient(1px 1px at 20% 30%,#fff,transparent),
         radial-gradient(1px 1px at 80% 70%,#fff,transparent),
         radial-gradient(1px 1px at 50% 50%,#fff,transparent);
-    animation:drift 180s linear infinite;
-    opacity:.2;
-}
-.stars::after{
-    content:"";
-    animation-duration:260s;
-    opacity:.12;
-}
-.stars::before{
-    content:"";
-    animation-duration:320s;
-    opacity:.08;
+    opacity:.15;
+    animation:drift 240s linear infinite;
 }
 @keyframes drift{
-    to{transform:translate(-800px,-800px)}
+    to{transform:translate(-1200px,-1200px)}
 }
 
-/* ===== NEBULA ===== */
 .nebula{
-    position:fixed;
-    inset:0;
     background:
-        radial-gradient(circle at 15% 25%,rgba(0,150,255,.12),transparent 40%),
-        radial-gradient(circle at 85% 75%,rgba(140,0,255,.12),transparent 45%);
-    filter:blur(100px);
-    animation:nebula 22s ease-in-out infinite alternate;
+        radial-gradient(circle at 30% 40%,rgba(0,240,255,.18),transparent 45%),
+        radial-gradient(circle at 70% 60%,rgba(120,90,255,.15),transparent 50%);
+    filter:blur(140px);
+    animation:nebula 26s ease-in-out infinite alternate;
 }
 @keyframes nebula{
-    from{opacity:.4}
-    to{opacity:.85}
+    from{opacity:.35}
+    to{opacity:.9}
 }
 
-/* ===== GRID ===== */
-.grid{
-    position:fixed;
+/* ===== CORE ===== */
+.core{
+    position:absolute;
     inset:0;
-    background-image:
-        linear-gradient(var(--border) 1px,transparent 1px),
-        linear-gradient(90deg,var(--border) 1px,transparent 1px);
-    background-size:48px 48px;
-    mask-image:radial-gradient(circle,black,transparent 80%);
-    opacity:.25;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:5;
 }
 
-/* ===== SCANLINE ===== */
-.scanline{
-    position:fixed;
-    left:0;
-    width:100%;
-    height:2px;
-    background:rgba(0,234,255,.12);
-    animation:scan 7s linear infinite;
-    pointer-events:none;
-}
-@keyframes scan{
-    from{top:-10%}
-    to{top:110%}
-}
-
-/* ===== INTERFACE ===== */
 .interface{
     position:relative;
-    z-index:10;
     width:90%;
-    max-width:1150px;
-    margin:auto;
-    padding:70px 50px;
-    background:rgba(255,255,255,.025);
-    backdrop-filter:blur(40px);
-    border:1px solid var(--border);
-    box-shadow:0 0 120px rgba(0,234,255,.18), inset 0 0 40px rgba(0,234,255,.05);
-    animation:boot 1.8s ease-out forwards;
-}
-@keyframes boot{
-    from{opacity:0;transform:scale(.96) translateY(30px)}
-    to{opacity:1;transform:scale(1) translateY(0)}
+    max-width:1200px;
+    padding:90px 60px;
+    background:rgba(255,255,255,.03);
+    backdrop-filter:blur(50px);
+    border:1px solid rgba(0,240,255,.25);
+    box-shadow:
+        0 0 200px rgba(0,240,255,.25),
+        inset 0 0 80px rgba(0,240,255,.08);
 }
 
-/* ===== LOGO + ORBIT ===== */
-.logo-wrap{
-    position:relative;
-    margin-bottom:55px;
+/* ===== ENERGY CORE ===== */
+.energy{
+    position:absolute;
+    inset:50%;
+    width:420px;
+    height:420px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:
+        radial-gradient(circle at center,
+            rgba(0,240,255,.35),
+            rgba(120,90,255,.15),
+            transparent 70%);
+    filter:blur(10px);
+    animation:pulse 10s ease-in-out infinite;
+    z-index:-1;
 }
-.logo{
-    width:600px;
-    max-width:95%;
-    filter:drop-shadow(0 0 60px rgba(0,234,255,.45));
-    animation:logoPulse 8s ease-in-out infinite;
-}
-@keyframes logoPulse{
-    50%{transform:scale(1.025);filter:drop-shadow(0 0 90px rgba(0,234,255,.65))}
+@keyframes pulse{
+    50%{transform:translate(-50%,-50%) scale(1.08)}
 }
 
+/* ===== ORBITS ===== */
 .orbit{
     position:absolute;
-    inset:-40px;
-    border:1px dashed rgba(0,234,255,.25);
+    inset:-60px;
+    border:1px dashed rgba(0,240,255,.25);
     border-radius:50%;
-    animation:spin 46s linear infinite;
+    animation:spin linear infinite;
 }
+.o1{animation-duration:60s}
+.o2{animation-duration:90s;transform:rotate(45deg)}
+.o3{animation-duration:140s;transform:rotate(75deg)}
+
 .orbit::after{
     content:"";
     position:absolute;
     top:50%;
     left:50%;
-    width:7px;
-    height:7px;
+    width:6px;
+    height:6px;
     background:var(--neon);
     border-radius:50%;
-    transform:translateX(190px);
-    box-shadow:0 0 25px var(--neon);
+    transform:translateX(210px);
+    box-shadow:0 0 30px var(--neon);
 }
+
 @keyframes spin{
     to{transform:rotate(360deg)}
+}
+
+/* ===== LOGO ===== */
+.logo{
+    width:620px;
+    max-width:95%;
+    filter:drop-shadow(0 0 120px rgba(0,240,255,.7));
+    animation:logoFloat 12s ease-in-out infinite;
+}
+@keyframes logoFloat{
+    50%{transform:translateY(-6px)}
 }
 
 /* ===== TEXT ===== */
 .status{
     font-family:'Orbitron',sans-serif;
-    font-size:.75rem;
-    letter-spacing:6px;
+    letter-spacing:8px;
+    font-size:.7rem;
     color:var(--neon);
     opacity:.75;
-    margin-bottom:20px;
+    margin-bottom:30px;
 }
 
 .headline{
-    font-size:1.6rem;
-    line-height:1.55;
+    font-size:1.65rem;
+    line-height:1.6;
     font-weight:300;
     max-width:900px;
-    margin:0 auto 50px;
+    margin:50px auto 70px;
+    text-align:center;
 }
 .highlight{
     color:var(--neon);
-    font-weight:700;
-    text-shadow:0 0 12px rgba(0,234,255,.45);
+    text-shadow:0 0 20px rgba(0,240,255,.6);
 }
 
 /* ===== CTA ===== */
 .cta{
     display:inline-block;
-    padding:20px 65px;
+    padding:22px 70px;
     border:1px solid var(--neon);
-    color:#fff;
-    text-decoration:none;
     font-family:'Orbitron',sans-serif;
-    letter-spacing:4px;
-    transition:.4s ease;
+    letter-spacing:5px;
+    text-decoration:none;
+    color:#fff;
+    transition:.5s ease;
 }
 .cta:hover{
     background:var(--neon);
-    color:#020610;
-    box-shadow:0 0 50px var(--neon);
-    transform:translateY(-2px);
+    color:#01040b;
+    box-shadow:0 0 80px var(--neon);
 }
 
-/* ===== TELEMETRY ===== */
-.telemetry{
+/* ===== HUD ===== */
+.hud{
     position:absolute;
     font-size:.65rem;
     color:var(--neon);
-    opacity:.45;
+    opacity:.35;
     letter-spacing:2px;
-    text-transform:uppercase;
 }
-.tl{top:18px;left:22px}
-.br{bottom:18px;right:22px}
+.tl{top:22px;left:26px}
+.br{bottom:22px;right:26px}
 
 /* ===== MOBILE ===== */
 @media(max-width:768px){
-    .interface{padding:40px 20px}
+    .interface{padding:50px 20px}
     .headline{font-size:1.15rem}
-    .telemetry{display:none}
+    .hud{display:none}
 }
 </style>
 </head>
 
 <body>
 
-<div class="stars"></div>
-<div class="nebula"></div>
-<div class="grid"></div>
-<div class="scanline"></div>
+<div class="layer stars"></div>
+<div class="layer nebula"></div>
 
-<div class="interface">
+<div class="core">
+    <div class="interface">
 
-<div class="telemetry tl">
-KERNEL_LOAD: 0.002ms<br>
-ISOLATION: HARDWARE_LOCKED<br>
-MISSION: ORBITAL_PERSISTENCE
-</div>
+        <div class="energy"></div>
 
-<div class="status">ORBITAL SYSTEM ONLINE</div>
+        <div class="orbit o1"></div>
+        <div class="orbit o2"></div>
+        <div class="orbit o3"></div>
 
-<div class="logo-wrap">
-    <div class="orbit"></div>
-    <img src="logo.png" class="logo" alt="DYON Systems">
-</div>
+        <div class="hud tl">
+            CORE_STATE: STABLE<br>
+            AUTONOMY: ACTIVE<br>
+            TRUST_MODEL: HARDWARE
+        </div>
 
-<p class="headline">
-Standardizing <span class="highlight">Satellite Operating Systems</span>
-for the NewSpace era.<br><br>
-Autonomous execution, <span class="highlight">hardware-enforced trust</span>,
-and mission-critical resilience —
-from LEO to deep space.
-</p>
+        <div class="status">ORBITAL INTELLIGENCE ONLINE</div>
 
-<a href="mailto:contact@dyonsystems.com" class="cta">
-Open Orbital Channel
-</a>
+        <img src="logo.png" class="logo" alt="DYON Systems">
 
-<div class="telemetry br">
-NODE: DYON-OS-01<br>
-STATUS: OPERATIONAL<br>
-FRAME: LEO_REFERENCE
-</div>
+        <p class="headline">
+            Standardizing <span class="highlight">Satellite Operating Systems</span>
+            for a future beyond Earth.<br><br>
+            Autonomous execution, hardware-enforced trust,
+            and resilience engineered
+            for environments where failure does not exist.
+        </p>
 
+        <a href="mailto:contact@dyonsystems.com" class="cta">
+            Open Orbital Channel
+        </a>
+
+        <div class="hud br">
+            NODE: DYON-CORE-01<br>
+            FRAME: ORBITAL
+        </div>
+
+    </div>
 </div>
 
 </body>
