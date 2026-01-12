@@ -12,7 +12,6 @@
             --glass: rgba(255, 255, 255, 0.03);
         }
 
-        /* ניקוי כללי ומניעת גלילה */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body {
             margin: 0; padding: 0; width: 100%; height: 100%;
@@ -42,7 +41,6 @@
         }
         #main-site.active { opacity: 1; transform: scale(1); }
 
-        /* רקע דינמי */
         .stars {
             position: fixed; inset: -50%;
             background: radial-gradient(1px 1px at 20% 30%,#fff,transparent),
@@ -57,12 +55,10 @@
         }
         @keyframes drift { to { transform: translate(-10%, -10%); } }
 
-        /* ===== HOLO INTERFACE PANEL ===== */
         .interface {
             position: relative;
             width: 90%;
             max-width: 1100px;
-            /* שימוש ב-vh כדי לוודא שזה נכנס בתוך מסך הטלפון בלי להיחתך */
             max-height: 90vh;
             padding: clamp(30px, 6vh, 80px) clamp(20px, 4vw, 60px);
             background: var(--glass);
@@ -75,25 +71,14 @@
             align-items: center;
             justify-content: center;
             z-index: 10;
-            overflow: hidden;
         }
-
-        /* אלמנטים דקורטיביים */
-        .scanline {
-            position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(to right, transparent, var(--neon), transparent);
-            animation: scan 8s linear infinite; opacity: 0.5;
-        }
-        @keyframes scan { from { top: -10%; } to { top: 110%; } }
 
         .logo {
             width: clamp(280px, 50vw, 580px);
             height: auto;
             filter: drop-shadow(0 0 40px rgba(0, 240, 255, 0.4));
             margin-bottom: clamp(20px, 4vh, 40px);
-            animation: logoFloat 6s ease-in-out infinite;
         }
-        @keyframes logoFloat { 50% { transform: translateY(-8px); } }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
@@ -105,10 +90,10 @@
         }
 
         .headline {
-            font-size: clamp(1rem, 3.5vw, 1.45rem);
-            line-height: 1.5;
+            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            line-height: 1.6;
             font-weight: 200;
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto clamp(30px, 5vh, 60px);
             color: #cbd5e1;
         }
@@ -125,11 +110,9 @@
             color: #fff;
             background: rgba(0, 240, 255, 0.05);
             transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            white-space: nowrap;
         }
-        .cta:hover { background: var(--neon); color: #000; box-shadow: 0 0 50px var(--neon); letter-spacing: 5px; }
+        .cta:hover { background: var(--neon); color: #000; box-shadow: 0 0 50px var(--neon); }
 
-        /* HUD - מותאם למחשב בלבד */
         .hud {
             position: absolute; font-size: 0.6rem; color: var(--neon); opacity: 0.4;
             letter-spacing: 2px; text-transform: uppercase; display: none;
@@ -140,17 +123,9 @@
             .br { bottom: 25px; right: 30px; text-align: right; }
         }
 
-        /* תיקונים ספציפיים לטלפונים */
         @media (max-width: 768px) {
-            .interface {
-                width: 95%;
-                padding: 40px 15px;
-                border-radius: 10px;
-            }
-            .headline {
-                font-size: 1.1rem;
-                margin-bottom: 40px;
-            }
+            .interface { width: 95%; padding: 40px 15px; }
+            .headline { font-size: 1.1rem; }
             .cta { width: 90%; text-align: center; }
         }
     </style>
@@ -166,27 +141,21 @@
     <div class="nebula"></div>
 
     <div class="interface">
-        <div class="scanline"></div>
-        
-        <div class="hud tl">
-            CORE: DYON_V1<br>OS_TYPE: HYBRID<br>ISOLATION: ENABLED
-        </div>
+        <div class="hud tl">CORE_V1: LOADED<br>ISOLATION: ACTIVE<br>STATUS: SECURE</div>
 
-        <h1>Satellite Operating Systems</h1>
+        <h1>Quantum Core OS</h1>
 
         <img src="logo.png" class="logo" alt="DYON Systems">
 
         <p class="headline">
-            Defining the <span class="highlight">Orbital OS Layer</span>.<br>
-            Bridging Edge-AI with zero-risk mission integrity through 
-            hardware-enforced isolation.
+            The foundation for <strong>Autonomous Space Missions</strong>.<br>
+            Bridging high-performance <span class="highlight">Edge-AI</span> with mission integrity through 
+            hardware-enforced isolation—from LEO to Deep Space.
         </p>
 
-        <a href="mailto:idanva13@gmail.com" class="cta">Establish Connection</a>
+        <a href="mailto:idanva13@gmail.com" class="cta">ESTABLISH CONNECTION</a>
 
-        <div class="hud br">
-            STATUS: ACTIVE<br>FRAME: ORBITAL<br>NODE: 01
-        </div>
+        <div class="hud br">NODE: 01<br>MISSION: STEALTH<br>FRAME: ORBITAL</div>
     </div>
 </div>
 
@@ -196,11 +165,11 @@
     const site = document.getElementById('main-site');
 
     const lines = [
-        "> INITIALIZING POWER SIGNAL...",
-        "> LOADING KERNEL MODULES...",
-        "> VERIFYING HARDWARE TRUST LAYER...",
-        "> ISOLATION SHIELD: ACTIVE",
-        "> SYNCING ORBITAL TELEMETRY...",
+        "> POWER SIGNAL DETECTED...",
+        "> INITIALIZING CORE KERNEL...",
+        "> VERIFYING ISOLATION LAYER... OK",
+        "> LOADING DYON_OS_V1.0.26...",
+        "> ESTABLISHING ORBITAL LINK...",
         "> SYSTEM ONLINE. WELCOME TO DYON."
     ];
 
