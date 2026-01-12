@@ -3,226 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DYON Systems | High-Reliability Satellite OS</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Plus+Jakarta+Sans:wght@200;400;700&display=swap" rel="stylesheet">
-
+    <title>DYON Systems | The Next-Gen Satellite Operating System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@100;400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --accent: #00d2ff;
-            --bg: #020610;
-            --text-muted: #94a3b8;
+            --neon-blue: #00eaff;
+            --deep-navy: #020610;
+            --interface-border: rgba(0, 234, 255, 0.2);
         }
 
-        * { box-sizing: border-box; }
-
-        html, body {
-            margin: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: white;
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: var(--deep-navy);
+            color: #e0f2f7;
+            font-family: 'JetBrains Mono', monospace;
+            display: flex; align-items: center; justify-content: center;
             overflow: hidden;
-            cursor: crosshair;
+            position: relative;
         }
 
-        /* ===== BACKGROUND ELEMENTS ===== */
-        .stars-container {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at center, #0a1b3d 0%, var(--bg) 80%);
-            z-index: 0;
-        }
-
-        .nebula {
-            position: fixed;
-            inset: 0;
+        /* רקע ערפילית וחלקיקים דינמי */
+        .space-engine {
+            position: fixed; inset: 0;
             background: 
-                radial-gradient(circle at 15% 25%, rgba(0, 210, 255, 0.08), transparent 40%),
-                radial-gradient(circle at 85% 75%, rgba(112, 0, 255, 0.07), transparent 45%);
-            filter: blur(100px);
-            animation: pulseNebula 15s ease-in-out infinite alternate;
+                radial-gradient(circle at 15% 25%, rgba(0, 150, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 75%, rgba(80, 0, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at center, #0a1b3d 0%, var(--deep-navy) 100%);
+            z-index: -1;
         }
 
-        @keyframes pulseNebula { from { opacity: 0.5; } to { opacity: 0.8; } }
-
-        .grid-overlay {
-            position: fixed;
-            inset: 0;
+        /* שכבת רשת טכנית (Grid) */
+        .grid-layer {
+            position: fixed; inset: 0;
             background-image: 
-                linear-gradient(rgba(0, 210, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 210, 255, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: 1;
+                linear-gradient(var(--interface-border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--interface-border) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle, black, transparent 80%);
+            z-index: 0;
+            opacity: 0.3;
         }
 
-        /* ===== SCANLINE EFFECT ===== */
-        body::before {
-            content: " ";
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-            background-size: 100% 4px, 3px 100%;
+        /* הממשק המרכזי - הולוגרמה חיה */
+        .os-interface {
+            position: relative;
             z-index: 10;
-            pointer-events: none;
-        }
-
-        /* ===== HERO SECTION ===== */
-        .hero {
-            position: relative;
-            z-index: 5;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 90%; max-width: 1100px;
+            padding: 70px 50px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(35px);
+            border: 1px solid var(--interface-border);
+            border-radius: 4px; /* מראה הנדסי חד */
+            box-shadow: 0 0 80px rgba(0, 234, 255, 0.15), inset 0 0 30px rgba(0, 234, 255, 0.05);
             text-align: center;
-            padding: 20px;
+            animation: bootUp 2s ease-out;
         }
 
-        .hero-inner {
-            max-width: 1000px;
-            animation: fadeIn 1.8s ease-out;
+        @keyframes bootUp {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* ===== LOGO AREA ===== */
+        /* לוגו ענק עם גלואו ואנימציית פעימה */
         .logo-box {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 40px;
-        }
-
-        .logo-main {
-            width: 580px;
-            max-width: 90vw;
-            filter: drop-shadow(0 0 50px rgba(0, 210, 255, 0.3));
-            animation: breathe 6s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.02); opacity: 1; }
-        }
-
-        /* ===== TEXT CONTENT ===== */
-        h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            letter-spacing: 12px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 25px;
-            font-weight: 500;
-        }
-
-        .main-headline {
-            font-size: 1.45rem;
-            line-height: 1.6;
-            font-weight: 200;
-            color: #f1f5f9;
             margin-bottom: 50px;
-        }
-
-        .main-headline strong {
-            color: #fff;
-            font-weight: 600;
-            border-bottom: 1px solid var(--accent);
-        }
-
-        /* ===== BUTTONS ===== */
-        .btn-orbital {
-            display: inline-block;
-            padding: 22px 65px;
-            background: rgba(0, 210, 255, 0.03);
-            border: 1px solid rgba(0, 210, 255, 0.4);
-            color: white;
-            text-decoration: none;
-            font-family: 'Space Grotesk', sans-serif;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            font-size: 0.95rem;
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
             position: relative;
-            overflow: hidden;
+        }
+        .logo-img {
+            width: 600px; max-width: 95%;
+            filter: drop-shadow(0 0 30px rgba(0, 234, 255, 0.4));
+            animation: logoBreathe 8s infinite ease-in-out;
+        }
+        @keyframes logoBreathe {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(0, 234, 255, 0.3)); }
+            50% { transform: scale(1.02); filter: drop-shadow(0 0 50px rgba(0, 234, 255, 0.5)); }
         }
 
-        .btn-orbital:hover {
-            background: var(--accent);
-            color: #020610;
-            box-shadow: 0 0 50px rgba(0, 210, 255, 0.4);
-            letter-spacing: 6px;
+        /* טקסטים עתידניים */
+        .status-tag {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem; letter-spacing: 6px;
+            color: var(--neon-blue); margin-bottom: 20px;
+            display: block; opacity: 0.8;
+        }
+
+        .headline {
+            font-size: 1.6rem; line-height: 1.4;
+            font-weight: 300; color: #fff;
+            margin-bottom: 45px; max-width: 900px; margin-inline: auto;
+        }
+
+        .highlight {
+            color: var(--neon-blue); font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 234, 255, 0.4);
+        }
+
+        /* כפתור טקטי */
+        .btn-nexus {
+            display: inline-block;
+            padding: 20px 60px;
+            background: transparent;
+            color: #fff;
+            border: 1px solid var(--neon-blue);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem; letter-spacing: 4px;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        .btn-nexus:hover {
+            background: var(--neon-blue); color: var(--deep-navy);
+            box-shadow: 0 0 40px var(--neon-blue);
             transform: translateY(-2px);
         }
 
-        .status-footer {
-            margin-top: 20px;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        /* טלמטריה בצדדים */
+        .telemetry {
+            position: absolute; font-size: 0.65rem; color: var(--neon-blue);
+            opacity: 0.4; text-transform: uppercase; letter-spacing: 2px;
+            pointer-events: none;
         }
+        .top-l { top: 15px; left: 20px; text-align: left; }
+        .bottom-r { bottom: 15px; right: 20px; text-align: right; }
 
-        /* ===== HUD TELEMETRY ===== */
-        .hud {
-            position: fixed;
-            bottom: 40px;
-            left: 40px;
-            font-family: 'Space Grotesk', monospace;
-            font-size: 0.65rem;
-            color: var(--accent);
-            opacity: 0.5;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-align: left;
+        /* פס סריקה (Scanline) */
+        .scanline {
+            position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+            background: rgba(0, 234, 255, 0.1);
+            animation: scan 6s linear infinite;
+            z-index: 100; pointer-events: none;
         }
+        @keyframes scan { from { top: -10%; } to { top: 110%; } }
 
         @media (max-width: 768px) {
-            .main-headline { font-size: 1.15rem; }
-            .logo-main { width: 95%; }
-            .hud { display: none; }
-            .btn-orbital { width: 100%; padding: 18px 0; }
+            .os-interface { padding: 40px 20px; width: 95%; }
+            .headline { font-size: 1.1rem; }
+            .logo-img { width: 100%; }
+            .telemetry { display: none; }
         }
     </style>
 </head>
 <body>
+    <div class="space-engine"></div>
+    <div class="grid-layer"></div>
+    <div class="scanline"></div>
 
-    <div class="stars-container">
-        <div class="nebula"></div>
-        <div class="grid-overlay"></div>
-    </div>
-
-    <main class="hero">
-        <div class="hero-inner">
-            
-            <div class="logo-box">
-                <img src="logo.png" class="logo-main" alt="DYON Systems">
-            </div>
-
-            <h1>The Standard for Orbital Autonomy</h1>
-
-            <p class="main-headline">
-                Designing the <strong>Hybrid Infrastructure</strong> for the NewSpace era.<br>
-                Bridging high-performance Edge-AI with zero-risk mission integrity<br>
-                through <strong>hardware-enforced isolation</strong>.
-            </p>
-
-            <a href="mailto:idanva13@gmail.com" class="btn-orbital">Establish Connection</a>
-            
-            <div class="status-footer">
-                Stealth Mission · LEO to Deep Space · 2026 Deployment
-            </div>
+    <div class="os-interface">
+        <div class="telemetry top-l">
+            KERNEL_LOAD: OPTIMAL [0.002ms]<br>
+            ISOLATION_LAYER: SECURE<br>
+            MISSION: STEALTH_ORBIT
         </div>
-    </main>
 
-    <div class="hud">
-        NODE: DYON_V1 // STATUS: SECURE<br>
-        KERNEL: ISOLATED // AI_LINK: READY<br>
-        LATENCY: OPTIMAL // MISSION: STEALTH
+        <span class="status-tag">ESTABLISHING ORBITAL PROTOCOL</span>
+        
+        <div class="logo-box">
+            <img src="logo.png" alt="DYON Systems Logo" class="logo-img">
+        </div>
+
+        <p class="headline">
+            Standardizing <span class="highlight">Satellite Operating Systems</span> for the NewSpace Era. <br>
+            Bridging high-performance <span class="highlight">Edge-AI</span> with mission-critical reliability through <span class="highlight">hardware-enforced isolation</span>.
+        </p>
+
+        <a href="mailto:idanva13@gmail.com" class="btn-nexus">Establish Communication</a>
+
+        <div class="telemetry bottom-r">
+            NODE: DYON_V1.0.26<br>
+            STATUS: OPERATIONAL<br>
+            LOC: LEO_ORBITAL_FRAME
+        </div>
     </div>
-
 </body>
 </html>
