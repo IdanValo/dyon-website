@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DYON Systems | Secure Space Infrastructure</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --accent: #ff8c00; /* הכתום של הלוגו שלך */
-            --steel: #64748b;
-            --bg: #05070a;
-            --panel: rgba(15, 23, 42, 0.8);
+            --accent: #ff8c00; /* הכתום העוצמתי של DYON */
+            --gold-subtle: rgba(255, 140, 0, 0.4);
+            --bg: #000000;
+            --panel: rgba(10, 10, 10, 0.95);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -18,114 +18,114 @@
             width: 100%; height: 100%; 
             background: var(--bg); color: #fff; 
             font-family: 'JetBrains Mono', monospace; 
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* ===== BACKGROUND: STATIC CIRCUIT MAP ===== */
+        /* רקע סטטי הנדסי - ללא תנועת עכבר */
         .background {
             position: fixed; inset: 0;
-            background: 
-                radial-gradient(circle at center, #0f172a 0%, var(--bg) 100%);
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
             z-index: 0;
         }
 
-        /* רשת הנדסית עדינה - לא זזה עם העכבר */
         .grid-layer {
             position: absolute; inset: 0;
             background-image: 
-                linear-gradient(rgba(100, 116, 139, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(100, 116, 139, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            mask-image: linear-gradient(to bottom, black, transparent);
+                linear-gradient(rgba(255, 140, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 140, 0, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
             z-index: 1;
         }
 
-        /* ===== BOOT LOADER ===== */
-        #boot {
-            position: fixed; inset: 0; background: #000; z-index: 10000;
-            display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.5s ease;
-        }
-        #boot-text { color: var(--accent); letter-spacing: 5px; font-size: 0.8rem; }
-
         /* ===== MAIN INTERFACE ===== */
         #scene {
-            position: relative; width: 100%; height: 100vh;
+            position: relative; width: 100%; min-height: 100vh;
             display: flex; align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 1.2s ease;
-            z-index: 10;
+            z-index: 10; padding: 20px;
         }
-        #scene.active { opacity: 1; }
 
         .container {
             position: relative;
-            width: 90%; max-width: 1100px;
-            padding: clamp(50px, 10vh, 100px) 30px;
+            width: 100%; max-width: 1000px;
+            padding: clamp(60px, 10vh, 120px) clamp(20px, 5vw, 60px);
             background: var(--panel);
-            border: 1px solid rgba(100, 116, 139, 0.3);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            border: 1px solid var(--gold-subtle);
             text-align: center;
-            border-top: 4px solid var(--accent); /* דגש צבע המותג */
+            box-shadow: 0 0 80px rgba(0,0,0,1);
+            border-top: 4px solid var(--accent);
         }
 
-        /* אלמנט סייבר - "סורק" עדין */
-        .scanner {
-            position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(to right, transparent, var(--accent), transparent);
-            animation: scan 6s linear infinite; opacity: 0.4;
-        }
-        @keyframes scan { from { top: 0%; } to { top: 100%; } }
-
+        /* לוגו יציב */
         .logo {
-            width: clamp(300px, 60vw, 620px);
-            margin-bottom: 40px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+            width: 100%; max-width: 580px;
+            height: auto;
+            margin-bottom: 50px;
+            filter: drop-shadow(0 0 20px rgba(255, 140, 0, 0.2));
         }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem; letter-spacing: 12px;
-            color: var(--steel); text-transform: uppercase;
-            margin-bottom: 25px;
+            font-size: clamp(0.65rem, 2vw, 0.8rem);
+            letter-spacing: 10px;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            opacity: 0.8;
         }
 
+        /* סידור הטקסט למניעת מילים בודדות בשורה */
         .headline {
-            font-size: clamp(1.1rem, 3.5vw, 1.6rem);
-            line-height: 1.6; font-weight: 300;
-            max-width: 850px; margin: 0 auto 50px;
-            color: #cbd5e1;
+            font-size: clamp(1.2rem, 3.5vw, 1.75rem);
+            line-height: 1.5;
+            font-weight: 300;
+            max-width: 850px; /* הגבלה כדי למנוע משפטים ארוכים מדי */
+            margin: 0 auto 60px;
+            color: #e2e8f0;
+            text-wrap: balance; /* פיצ'ר מודרני שמאזן את אורך השורות אוטומטית */
         }
-        .highlight { color: #fff; font-weight: 700; }
+
+        .headline strong { color: #fff; font-weight: 700; }
+        .highlight { 
+            color: var(--accent); 
+            font-weight: 700; 
+            white-space: nowrap; /* מונע מהמילה highlight להישבר באמצע */
+        }
 
         .cta {
-            display: inline-block; padding: 20px 70px;
-            background: var(--accent); color: #000;
-            text-decoration: none; font-family: 'Orbitron', sans-serif;
-            letter-spacing: 4px; font-weight: 900;
-            transition: 0.3s;
-        }
-        .cta:hover { 
-            background: #fff; transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255, 140, 0, 0.3);
+            display: inline-block;
+            padding: 22px 80px;
+            background: var(--accent);
+            color: #000;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 4px;
+            font-weight: 900;
+            transition: all 0.3s ease;
+            border: 1px solid var(--accent);
         }
 
-        /* Telemetry - Hardware feel */
-        .hud {
-            position: absolute; font-size: 10px; color: var(--steel); 
-            opacity: 0.6; font-family: monospace;
+        .cta:hover { 
+            background: transparent; 
+            color: var(--accent);
+            box-shadow: 0 0 40px rgba(255, 140, 0, 0.4);
         }
-        .tl { top: 20px; left: 20px; text-align: left; }
-        .br { bottom: 20px; right: 20px; text-align: right; }
+
+        /* אלמנטים הנדסיים בפינות */
+        .hud {
+            position: absolute; font-size: 10px; color: var(--accent); 
+            opacity: 0.4; font-family: monospace; letter-spacing: 1px;
+        }
+        .tl { top: 20px; left: 25px; text-align: left; }
+        .br { bottom: 20px; right: 25px; text-align: right; }
 
         @media (max-width: 768px) {
-            .container { width: 100%; height: 100vh; border: none; padding-top: 80px; }
+            .container { border: none; background: transparent; padding-top: 40px; }
             .hud { display: none; }
+            .cta { width: 100%; padding: 20px 0; }
         }
     </style>
 </head>
 <body>
-
-<div id="boot"><div id="boot-text">SECURE BOOT...</div></div>
 
 <div class="background">
     <div class="grid-layer"></div>
@@ -133,31 +133,23 @@
 
 <div id="scene">
     <div class="container">
-        <div class="scanner"></div>
-        <div class="hud tl">SYS_CORE: 0x1A4<br>SECURE_ENCLAVE: ACTIVE<br>STATUS: ENFORCED</div>
+        <div class="hud tl">CORE_V1: ENFORCED<br>ISOLATION: HARDWARE<br>SECURE_BOOT: OK</div>
 
         <h1>Mission-Critical Infrastructure</h1>
         
         <img src="logo.png" class="logo" alt="DYON Systems">
 
         <p class="headline">
-            Building the <strong>Secure Infrastructure</strong> for the NewSpace Era.<br>
+            Building the <strong>Secure Infrastructure</strong> for the NewSpace Era.
             A hybrid operating system designed to run high-performance <span class="highlight">Edge-AI</span> 
             on satellites with <span class="highlight">Zero-Mission-Risk</span>.
         </p>
 
-        <a href="mailto:contact@dyonsystems.com" class="cta">Connect Node</a>
+        <a href="mailto:contact@dyonsystems.com" class="cta">ESTABLISH CONNECTION</a>
 
-        <div class="hud br">LOC: LEO_ORBIT<br>ISOLATION_LAYER: HARDWARE<br>v1.0.26</div>
+        <div class="hud br">LOC: LEO_ORBITAL<br>OS_INTEL: DYON_PROTOTYPE<br>v1.0.26</div>
     </div>
 </div>
 
-<script>
-    setTimeout(() => {
-        document.getElementById('boot').style.opacity = '0';
-        document.getElementById('scene').classList.add('active');
-        setTimeout(() => document.getElementById('boot').remove(), 500);
-    }, 1000);
-</script>
 </body>
 </html>
