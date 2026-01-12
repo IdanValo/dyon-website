@@ -1,248 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DYON Systems | Orbital Intelligence Core</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DYON Systems | Orbital Intelligence Core</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@200;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon: #00f0ff;
+            --violet: #7a5cff;
+            --bg: #01040b;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@200;400&display=swap" rel="stylesheet">
+        * { box-sizing: border-box; }
 
-<style>
-:root{
-    --neon:#00f0ff;
-    --violet:#7a5cff;
-    --bg:#01040b;
-}
+        html, body {
+            margin: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #08162f 0%, var(--bg) 70%);
+            color: #e8f8ff;
+            font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
+        }
 
-*{box-sizing:border-box}
+        /* ===== BOOT LOADER SCREEN ===== */
+        #boot-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-html,body{
-    margin:0;
-    width:100%;
-    height:100%;
-    background:radial-gradient(circle at center,#08162f 0%,var(--bg) 70%);
-    color:#e8f8ff;
-    font-family:'JetBrains Mono',monospace;
-    overflow:hidden;
-}
+        #boot-log {
+            width: 100%;
+            max-width: 600px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--neon);
+            text-transform: uppercase;
+        }
 
-/* ===== COSMIC DEPTH ===== */
-.layer{
-    position:fixed;
-    inset:-50%;
-    pointer-events:none;
-}
-.stars{
-    background:
-        radial-gradient(1px 1px at 20% 30%,#fff,transparent),
-        radial-gradient(1px 1px at 80% 70%,#fff,transparent),
-        radial-gradient(1px 1px at 50% 50%,#fff,transparent);
-    opacity:.15;
-    animation:drift 240s linear infinite;
-}
-@keyframes drift{
-    to{transform:translate(-1200px,-1200px)}
-}
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background: var(--neon);
+            margin-left: 5px;
+            animation: blink 0.8s infinite;
+        }
 
-.nebula{
-    background:
-        radial-gradient(circle at 30% 40%,rgba(0,240,255,.18),transparent 45%),
-        radial-gradient(circle at 70% 60%,rgba(120,90,255,.15),transparent 50%);
-    filter:blur(140px);
-    animation:nebula 26s ease-in-out infinite alternate;
-}
-@keyframes nebula{
-    from{opacity:.35}
-    to{opacity:.9}
-}
+        @keyframes blink { 50% { opacity: 0; } }
 
-/* ===== CORE ===== */
-.core{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:5;
-}
+        /* ===== MAIN INTERFACE (HIDDEN INITIALLY) ===== */
+        #main-site {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1.5s ease;
+        }
 
-.interface{
-    position:relative;
-    width:90%;
-    max-width:1200px;
-    padding:90px 60px;
-    background:rgba(255,255,255,.03);
-    backdrop-filter:blur(50px);
-    border:1px solid rgba(0,240,255,.25);
-    box-shadow:
-        0 0 200px rgba(0,240,255,.25),
-        inset 0 0 80px rgba(0,240,255,.08);
-}
+        /* ===== COSMIC DEPTH ===== */
+        .layer { position: fixed; inset: -50%; pointer-events: none; }
+        .stars {
+            background: radial-gradient(1px 1px at 20% 30%,#fff,transparent),
+                        radial-gradient(1px 1px at 80% 70%,#fff,transparent),
+                        radial-gradient(1px 1px at 50% 50%,#fff,transparent);
+            opacity: .15; animation: drift 240s linear infinite;
+        }
+        @keyframes drift { to { transform: translate(-1200px,-1200px); } }
 
-/* ===== ENERGY CORE ===== */
-.energy{
-    position:absolute;
-    inset:50%;
-    width:420px;
-    height:420px;
-    transform:translate(-50%,-50%);
-    border-radius:50%;
-    background:
-        radial-gradient(circle at center,
-            rgba(0,240,255,.35),
-            rgba(120,90,255,.15),
-            transparent 70%);
-    filter:blur(10px);
-    animation:pulse 10s ease-in-out infinite;
-    z-index:-1;
-}
-@keyframes pulse{
-    50%{transform:translate(-50%,-50%) scale(1.08)}
-}
+        .nebula {
+            background: radial-gradient(circle at 30% 40%,rgba(0,240,255,.18),transparent 45%),
+                        radial-gradient(circle at 70% 60%,rgba(120,90,255,.15),transparent 50%);
+            filter: blur(140px); animation: nebula 26s ease-in-out infinite alternate;
+        }
+        @keyframes nebula { from { opacity: .35; } to { opacity: .9; } }
 
-/* ===== ORBITS ===== */
-.orbit{
-    position:absolute;
-    inset:-60px;
-    border:1px dashed rgba(0,240,255,.25);
-    border-radius:50%;
-    animation:spin linear infinite;
-}
-.o1{animation-duration:60s}
-.o2{animation-duration:90s;transform:rotate(45deg)}
-.o3{animation-duration:140s;transform:rotate(75deg)}
+        /* ===== CORE UI ===== */
+        .core { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 5; }
+        .interface {
+            position: relative; width: 90%; max-width: 1200px; padding: 90px 60px;
+            background: rgba(255, 255, 255, .03); backdrop-filter: blur(50px);
+            border: 1px solid rgba(0,240,255,.25);
+            box-shadow: 0 0 200px rgba(0,240,255,.25), inset 0 0 80px rgba(0,240,255,.08);
+            text-align: center;
+        }
 
-.orbit::after{
-    content:"";
-    position:absolute;
-    top:50%;
-    left:50%;
-    width:6px;
-    height:6px;
-    background:var(--neon);
-    border-radius:50%;
-    transform:translateX(210px);
-    box-shadow:0 0 30px var(--neon);
-}
+        .logo { width: 620px; max-width: 95%; filter: drop-shadow(0 0 120px rgba(0,240,255,.7)); animation: logoFloat 12s ease-in-out infinite; }
+        @keyframes logoFloat { 50% { transform: translateY(-10px); } }
 
-@keyframes spin{
-    to{transform:rotate(360deg)}
-}
+        .headline { font-size: 1.65rem; line-height: 1.6; font-weight: 300; margin: 50px auto 70px; }
+        .highlight { color: var(--neon); text-shadow: 0 0 20px rgba(0,240,255,.6); }
 
-/* ===== LOGO ===== */
-.logo{
-    width:620px;
-    max-width:95%;
-    filter:drop-shadow(0 0 120px rgba(0,240,255,.7));
-    animation:logoFloat 12s ease-in-out infinite;
-}
-@keyframes logoFloat{
-    50%{transform:translateY(-6px)}
-}
+        .cta {
+            display: inline-block; padding: 22px 70px; border: 1px solid var(--neon);
+            font-family: 'Orbitron', sans-serif; letter-spacing: 5px; text-decoration: none;
+            color: #fff; transition: .5s ease;
+        }
+        .cta:hover { background: var(--neon); color: #01040b; box-shadow: 0 0 80px var(--neon); }
 
-/* ===== TEXT ===== */
-.status{
-    font-family:'Orbitron',sans-serif;
-    letter-spacing:8px;
-    font-size:.7rem;
-    color:var(--neon);
-    opacity:.75;
-    margin-bottom:30px;
-}
+        .hud { position: absolute; font-size: .65rem; color: var(--neon); opacity: .35; letter-spacing: 2px; }
+        .tl { top: 22px; left: 26px; text-align: left; }
+        .br { bottom: 22px; right: 26px; text-align: right; }
 
-.headline{
-    font-size:1.65rem;
-    line-height:1.6;
-    font-weight:300;
-    max-width:900px;
-    margin:50px auto 70px;
-    text-align:center;
-}
-.highlight{
-    color:var(--neon);
-    text-shadow:0 0 20px rgba(0,240,255,.6);
-}
-
-/* ===== CTA ===== */
-.cta{
-    display:inline-block;
-    padding:22px 70px;
-    border:1px solid var(--neon);
-    font-family:'Orbitron',sans-serif;
-    letter-spacing:5px;
-    text-decoration:none;
-    color:#fff;
-    transition:.5s ease;
-}
-.cta:hover{
-    background:var(--neon);
-    color:#01040b;
-    box-shadow:0 0 80px var(--neon);
-}
-
-/* ===== HUD ===== */
-.hud{
-    position:absolute;
-    font-size:.65rem;
-    color:var(--neon);
-    opacity:.35;
-    letter-spacing:2px;
-}
-.tl{top:22px;left:26px}
-.br{bottom:22px;right:26px}
-
-/* ===== MOBILE ===== */
-@media(max-width:768px){
-    .interface{padding:50px 20px}
-    .headline{font-size:1.15rem}
-    .hud{display:none}
-}
-</style>
+        @media(max-width:768px) {
+            .interface { padding: 50px 20px; }
+            .headline { font-size: 1.15rem; }
+            .hud { display: none; }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="layer stars"></div>
-<div class="layer nebula"></div>
+<div id="boot-screen">
+    <div id="boot-log"></div>
+    <div class="cursor"></div>
+</div>
 
-<div class="core">
-    <div class="interface">
+<div id="main-site">
+    <div class="layer stars"></div>
+    <div class="layer nebula"></div>
 
-        <div class="energy"></div>
+    <div class="core">
+        <div class="interface">
+            <div class="hud tl">
+                CORE_STATE: STABLE<br>
+                AUTONOMY: ACTIVE<br>
+                TRUST_MODEL: HARDWARE
+            </div>
 
-        <div class="orbit o1"></div>
-        <div class="orbit o2"></div>
-        <div class="orbit o3"></div>
+            <div style="font-family:'Orbitron',sans-serif; letter-spacing:8px; font-size:.7rem; color:var(--neon); opacity:.75; margin-bottom:30px;">
+                ORBITAL INTELLIGENCE ONLINE
+            </div>
 
-        <div class="hud tl">
-            CORE_STATE: STABLE<br>
-            AUTONOMY: ACTIVE<br>
-            TRUST_MODEL: HARDWARE
+            <img src="logo.png" class="logo" alt="DYON Systems">
+
+            <p class="headline">
+                Standardizing <span class="highlight">Satellite Operating Systems</span> 
+                for a future beyond Earth.<br><br>
+                Autonomous execution, hardware-enforced trust, 
+                and resilience engineered 
+                for environments where failure is not an option.
+            </p>
+
+            <a href="mailto:contact@dyonsystems.com" class="cta">Open Orbital Channel</a>
+
+            <div class="hud br">
+                NODE: DYON-CORE-01<br>
+                FRAME: ORBITAL
+            </div>
         </div>
-
-        <div class="status">ORBITAL INTELLIGENCE ONLINE</div>
-
-        <img src="logo.png" class="logo" alt="DYON Systems">
-
-        <p class="headline">
-            Standardizing <span class="highlight">Satellite Operating Systems</span>
-            for a future beyond Earth.<br><br>
-            Autonomous execution, hardware-enforced trust,
-            and resilience engineered
-            for environments where failure does not exist.
-        </p>
-
-        <a href="mailto:contact@dyonsystems.com" class="cta">
-            Open Orbital Channel
-        </a>
-
-        <div class="hud br">
-            NODE: DYON-CORE-01<br>
-            FRAME: ORBITAL
-        </div>
-
     </div>
 </div>
+
+<script>
+    const logContainer = document.getElementById('boot-log');
+    const bootScreen = document.getElementById('boot-screen');
+    const mainSite = document.getElementById('main-site');
+
+    const bootSequence = [
+        "> POWER SIGNAL DETECTED...",
+        "> INITIALIZING CORE KERNEL...",
+        "> CHECKING MEMORY BANKS... OK",
+        "> VERIFYING ISOLATION LAYER... OK",
+        "> LOADING DYON_OS_V1.0.26...",
+        "> ESTABLISHING ORBITAL LINK...",
+        "> LATENCY: 3.2ms (SECURE)",
+        "> AUTHENTICATING HARDWARE TRUST...",
+        "> SYSTEM ONLINE."
+    ];
+
+    let lineIndex = 0;
+
+    function runBoot() {
+        if (lineIndex < bootSequence.length) {
+            const line = document.createElement('div');
+            line.textContent = bootSequence[lineIndex];
+            logContainer.appendChild(line);
+            lineIndex++;
+            
+            // מהירות טעינה משתנה למראה ריאליסטי
+            setTimeout(runBoot, Math.random() * 600 + 300);
+        } else {
+            // סיום האתחול
+            setTimeout(() => {
+                bootScreen.style.display = 'none';
+                mainSite.style.visibility = 'visible';
+                mainSite.style.opacity = '1';
+            }, 1000);
+        }
+    }
+
+    window.onload = runBoot;
+</script>
 
 </body>
 </html>
