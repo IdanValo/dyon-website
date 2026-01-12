@@ -3,160 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DYON Systems | High-Reliability Satellite OS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@100;400&display=swap" rel="stylesheet">
+    <title>DYON Systems | Secure Space Infrastructure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00f0ff; --bg: #01040a; }
-        * { box-sizing: border-box; cursor: none; }
-        html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: #fff; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
-
-        /* Custom Cursor */
-        #cursor { position: fixed; width: 30px; height: 30px; border: 1px solid var(--neon); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; box-shadow: 0 0 15px var(--neon); }
-
-        /* BOOT SEQUENCE */
-        #boot-screen { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1); }
-        #boot-log { width: 100%; max-width: 500px; color: var(--neon); font-size: 0.9rem; text-transform: uppercase; line-height: 1.8; }
-
-        /* WORLD CONTAINER */
-        #world { position: relative; width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 2s; perspective: 2000px; }
-        #world.active { opacity: 1; }
-
-        /* DYNAMIC GRID - החלק הייחודי */
-        #canvas-bg { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-
-        /* INTERFACE PANEL */
-        .panel {
-            position: relative; z-index: 10; width: 92%; max-width: 1100px; padding: 80px 40px;
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(0, 240, 255, 0.2);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            text-align: center; box-shadow: 0 0 100px rgba(0,0,0,0.8);
-            transform-style: preserve-3d;
+        :root { 
+            --accent: #00f0ff; 
+            --bg: #000205; 
+            --text-gray: rgba(209, 217, 230, 0.8);
         }
 
-        .logo { width: 580px; max-width: 100%; filter: drop-shadow(0 0 30px var(--neon)); margin-bottom: 40px; animation: float 8s infinite ease-in-out; }
-        @keyframes float { 50% { transform: translateY(-15px) rotate(1deg); } }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { 
+            width: 100%; height: 100%; 
+            background: var(--bg); color: #fff; 
+            font-family: 'Space Grotesk', sans-serif; 
+            overflow: hidden; touch-action: none;
+        }
 
-        h1 { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; letter-spacing: 12px; color: var(--neon); text-transform: uppercase; margin-bottom: 30px; opacity: 0.7; }
+        /* Boot Loader */
+        #boot {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease-in-out;
+        }
+        #boot-text { font-family: monospace; color: var(--accent); font-size: 0.9rem; letter-spacing: 3px; }
 
-        .headline { font-size: clamp(1rem, 3.5vw, 1.5rem); line-height: 1.6; max-width: 800px; margin: 0 auto 60px; font-weight: 200; color: #cbd5e1; }
-        .highlight { color: #fff; font-weight: 700; border-bottom: 1px dashed var(--neon); }
+        /* Background Layers */
+        canvas { position: absolute; inset: 0; z-index: 0; }
+        .nebula {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.05), transparent 70%);
+            filter: blur(100px); pointer-events: none;
+        }
 
-        .cta { display: inline-block; padding: 22px 75px; border: 1px solid var(--neon); font-family: 'Orbitron', sans-serif; letter-spacing: 5px; text-decoration: none; color: #fff; background: rgba(0, 240, 255, 0.05); transition: 0.5s; position: relative; overflow: hidden; }
-        .cta:hover { background: var(--neon); color: #000; box-shadow: 0 0 60px var(--neon); letter-spacing: 7px; }
+        /* Hero Scene */
+        #scene {
+            position: relative; width: 100%; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: 2s cubic-bezier(0.19, 1, 0.22, 1);
+            perspective: 1200px; z-index: 10;
+        }
+        #scene.active { opacity: 1; }
 
-        /* HUD */
-        .telemetry { position: absolute; font-size: 0.6rem; color: var(--neon); opacity: 0.4; letter-spacing: 2px; }
-        .tl { top: 20px; left: 25px; text-align: left; }
-        .br { bottom: 20px; right: 25px; text-align: right; }
+        .content-wrap {
+            position: relative; width: 90%; max-width: 1100px;
+            padding: clamp(40px, 8vh, 100px) 20px;
+            text-align: center; transform-style: preserve-3d;
+        }
 
-        @media (max-width: 768px) { .panel { padding: 60px 20px; border-radius: 0; } .logo { width: 95%; } .headline { font-size: 1.15rem; } .telemetry { display: none; } }
+        /* Logo Floating Logic */
+        .logo-box { position: relative; display: inline-block; margin-bottom: clamp(30px, 5vh, 60px); }
+        .logo {
+            width: clamp(280px, 50vw, 620px);
+            filter: drop-shadow(0 0 40px rgba(0, 240, 255, 0.3));
+            animation: float 8s infinite ease-in-out;
+        }
+        @keyframes float { 50% { transform: translateY(-15px) rotateX(5deg); } }
+
+        /* Typography */
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.6rem, 2vw, 0.8rem);
+            letter-spacing: clamp(6px, 1.5vw, 15px);
+            color: var(--accent); text-transform: uppercase;
+            margin-bottom: 25px; opacity: 0.7;
+        }
+
+        .headline {
+            font-size: clamp(1.1rem, 3.8vw, 1.6rem);
+            line-height: 1.6; font-weight: 300;
+            max-width: 850px; margin: 0 auto 50px;
+            color: var(--text-gray);
+        }
+        .headline strong { color: #fff; font-weight: 700; }
+        .highlight { color: #fff; font-weight: 700; border-bottom: 1px solid var(--accent); }
+
+        /* Interaction Elements */
+        .cta {
+            display: inline-block; padding: clamp(18px, 2.5vh, 24px) clamp(40px, 6vw, 80px);
+            border: 1px solid var(--accent); color: #fff;
+            text-decoration: none; font-family: 'Orbitron', sans-serif;
+            letter-spacing: 5px; font-weight: 900; background: rgba(0, 240, 255, 0.05);
+            transition: 0.4s; position: relative;
+        }
+        .cta:hover { background: var(--accent); color: #000; box-shadow: 0 0 60px var(--accent); transform: scale(1.05); }
+
+        /* HUD - Desktop Only */
+        .hud { position: absolute; font-family: monospace; font-size: 10px; color: var(--accent); opacity: 0.3; letter-spacing: 2px; }
+        .tl { top: 30px; left: 30px; text-align: left; }
+        .br { bottom: 30px; right: 30px; text-align: right; }
+
+        @media (max-width: 768px) {
+            .hud { display: none; }
+            .content-wrap { padding: 20px 10px; }
+            .cta { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
-<div id="cursor"></div>
+<div id="boot"><div id="boot-text">INITIALIZING DYON_CORE...</div></div>
 
-<div id="boot-screen">
-    <div id="boot-log"></div>
-</div>
-
-<div id="world">
-    <canvas id="canvas-bg"></canvas>
+<div id="scene">
+    <canvas id="canvas"></canvas>
+    <div class="nebula"></div>
     
-    <div class="panel">
-        <div class="telemetry tl">KERNEL: ENFORCED<br>ISOLATION: ACTIVE<br>LINK: SECURE</div>
+    <div class="hud tl">DYON_V1 // KERNEL_ACTIVE<br>ISOLATION: ENFORCED<br>STATUS: SECURE</div>
+    
+    <div class="content-wrap">
+        <h1>Satellite Operating System</h1>
         
-        <h1>Mission Critical Infrastructure</h1>
-        
-        <img src="logo.png" class="logo" alt="DYON Systems">
+        <div class="logo-box">
+            <img src="logo.png" class="logo" alt="DYON Systems">
+        </div>
 
         <p class="headline">
-            Defining the <span class="highlight">Orbital OS Layer</span>.<br>
-            Bridging <strong>Edge-AI</strong> with zero-risk mission integrity through <br>
-            <strong>hardware-enforced isolation</strong> for the NewSpace era.
+            Building the <strong>Secure Infrastructure</strong> for the NewSpace Era.<br>
+            A hybrid operating system designed to run high-performance <span class="highlight">Edge-AI</span> 
+            on satellites with <span class="highlight">Zero-Mission-Risk</span>.
         </p>
 
-        <a href="mailto:contact@dyonsystems.com" class="cta">INITIALIZE LINK</a>
-
-        <div class="hud telemetry br">NODE: DYON-CORE-01<br>STATUS: OPERATIONAL<br>FRAME: ORBITAL</div>
+        <a href="mailto:contact@dyonsystems.com" class="cta">ESTABLISH CONNECTION</a>
     </div>
+
+    <div class="hud br">NODE: 01 // ORBITAL_FRAME<br>MISSION: STEALTH_MODE<br>TRUST_MODEL: HARDWARE</div>
 </div>
 
 <script>
-    // 1. BOOT SEQUENCE
-    const log = document.getElementById('boot-log');
-    const lines = ["> BOOTING DYON_OS...", "> KERNEL ISOLATION: OK", "> EDGE-AI ENGINE: READY", "> ORBITAL LINK: ESTABLISHED", "> SYSTEM ONLINE."];
-    let l = 0;
-    function runBoot() {
-        if(l < lines.length) {
-            const d = document.createElement('div'); d.textContent = lines[l++];
-            log.appendChild(d); setTimeout(runBoot, 400);
-        } else {
-            setTimeout(() => { 
-                document.getElementById('boot-screen').style.opacity = '0';
-                document.getElementById('world').classList.add('active');
-                setTimeout(() => document.getElementById('boot-screen').remove(), 1000);
-            }, 600);
-        }
-    }
-    window.onload = runBoot;
+    // 1. Boot Logic
+    setTimeout(() => {
+        document.getElementById('boot').style.opacity = '0';
+        document.getElementById('scene').classList.add('active');
+        setTimeout(() => document.getElementById('boot').remove(), 1000);
+    }, 1500);
 
-    // 2. MOUSE TRACKING & PARALLAX
-    const cursor = document.getElementById('cursor');
-    const panel = document.querySelector('.panel');
-    let mX = 0, mY = 0;
-
+    // 2. Parallax
     document.addEventListener('mousemove', e => {
-        mX = e.clientX; mY = e.clientY;
-        cursor.style.left = mX + 'px';
-        cursor.style.top = mY + 'px';
-        
-        const xRot = (window.innerHeight/2 - mY) / 25;
-        const yRot = (mX - window.innerWidth/2) / 25;
-        panel.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+        const x = (window.innerHeight / 2 - e.clientY) / 35;
+        const y = (e.clientX - window.innerWidth / 2) / 35;
+        document.querySelector('.content-wrap').style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
     });
 
-    // 3. INTERACTIVE WARP GRID (The "Wow" Factor)
-    const canvas = document.getElementById('canvas-bg');
+    // 3. Starfield Physics
+    const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    let w, h;
-
-    function resize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
+    let particles = [];
+    
+    function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', resize);
-    resize();
+    window.addEventListener('resize', init);
+    init();
 
-    function drawGrid() {
-        ctx.clearRect(0, 0, w, h);
-        ctx.strokeStyle = 'rgba(0, 240, 255, 0.15)';
-        ctx.lineWidth = 1;
-
-        const spacing = 60;
-        for (let x = 0; x < w; x += spacing) {
-            ctx.beginPath();
-            for (let y = 0; y < h; y += 10) {
-                const dist = Math.hypot(x - mX, y - mY);
-                const warp = Math.max(0, 100 - dist) * 0.5;
-                const offsetX = ((x - mX) / dist) * warp || 0;
-                ctx.lineTo(x - offsetX, y);
-            }
-            ctx.stroke();
+    class Particle {
+        constructor() {
+            this.reset();
         }
-        for (let y = 0; y < h; y += spacing) {
-            ctx.beginPath();
-            for (let x = 0; x < w; x += 10) {
-                const dist = Math.hypot(x - mX, y - mY);
-                const warp = Math.max(0, 100 - dist) * 0.5;
-                const offsetY = ((y - mY) / dist) * warp || 0;
-                ctx.lineTo(x, y - offsetY);
-            }
-            ctx.stroke();
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 1.5;
+            this.speed = Math.random() * 0.5 + 0.2;
+            this.a = Math.random() * Math.PI * 2;
         }
-        requestAnimationFrame(drawGrid);
+        update() {
+            this.x += Math.cos(this.a) * this.speed;
+            this.y += Math.sin(this.a) * this.speed;
+            if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+        }
+        draw() {
+            ctx.fillStyle = "rgba(0, 240, 255, 0.3)";
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
-    drawGrid();
+
+    for(let i=0; i<100; i++) particles.push(new Particle());
+
+    function animate() {
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    animate();
 </script>
 </body>
 </html>
