@@ -7,10 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --accent: #ff8c00; /* הכתום העוצמתי של DYON */
-            --gold-subtle: rgba(255, 140, 0, 0.4);
+            --accent: #ff8c00; 
+            --gold-subtle: rgba(255, 140, 0, 0.2);
             --bg: #000000;
-            --panel: rgba(10, 10, 10, 0.95);
+            --panel: rgba(10, 10, 10, 0.98);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -18,16 +18,37 @@
             width: 100%; height: 100%; 
             background: var(--bg); color: #fff; 
             font-family: 'JetBrains Mono', monospace; 
-            overflow-x: hidden;
+            overflow: hidden; /* נשאר ככה כדי למנוע גלילה בזמן האתחול */
         }
 
-        /* רקע סטטי הנדסי - ללא תנועת עכבר */
+        /* ===== SECURE BOOT LOADER ===== */
+        #boot-screen {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+            padding: 30px; transition: opacity 0.8s ease-in-out;
+        }
+        #boot-log {
+            width: 100%; max-width: 500px;
+            color: var(--accent); font-size: 0.9rem;
+            line-height: 1.8; text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ===== MAIN INTERFACE ===== */
+        #main-site {
+            position: relative; width: 100%; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden;
+            transition: opacity 1.5s ease;
+            z-index: 5;
+        }
+        #main-site.active { opacity: 1; visibility: visible; }
+
         .background {
             position: fixed; inset: 0;
             background: radial-gradient(circle at center, #111 0%, #000 100%);
             z-index: 0;
         }
-
         .grid-layer {
             position: absolute; inset: 0;
             background-image: 
@@ -37,105 +58,74 @@
             z-index: 1;
         }
 
-        /* ===== MAIN INTERFACE ===== */
-        #scene {
-            position: relative; width: 100%; min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            z-index: 10; padding: 20px;
-        }
-
         .container {
-            position: relative;
-            width: 100%; max-width: 1000px;
-            padding: clamp(60px, 10vh, 120px) clamp(20px, 5vw, 60px);
+            position: relative; width: 90%; max-width: 1000px;
+            padding: clamp(50px, 10vh, 100px) 20px;
             background: var(--panel);
             border: 1px solid var(--gold-subtle);
-            text-align: center;
-            box-shadow: 0 0 80px rgba(0,0,0,1);
+            text-align: center; z-index: 10;
             border-top: 4px solid var(--accent);
         }
 
-        /* לוגו יציב */
         .logo {
-            width: 100%; max-width: 580px;
-            height: auto;
-            margin-bottom: 50px;
-            filter: drop-shadow(0 0 20px rgba(255, 140, 0, 0.2));
+            width: 100%; max-width: 580px; height: auto;
+            margin-bottom: 40px; filter: drop-shadow(0 0 20px rgba(255, 140, 0, 0.1));
         }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.65rem, 2vw, 0.8rem);
-            letter-spacing: 10px;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 30px;
-            opacity: 0.8;
+            font-size: clamp(0.6rem, 2vw, 0.75rem);
+            letter-spacing: 10px; color: var(--accent);
+            text-transform: uppercase; margin-bottom: 25px; opacity: 0.8;
         }
 
-        /* סידור הטקסט למניעת מילים בודדות בשורה */
         .headline {
-            font-size: clamp(1.2rem, 3.5vw, 1.75rem);
-            line-height: 1.5;
-            font-weight: 300;
-            max-width: 850px; /* הגבלה כדי למנוע משפטים ארוכים מדי */
-            margin: 0 auto 60px;
-            color: #e2e8f0;
-            text-wrap: balance; /* פיצ'ר מודרני שמאזן את אורך השורות אוטומטית */
+            font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+            line-height: 1.6; font-weight: 300;
+            max-width: 850px; margin: 0 auto 50px;
+            color: #d1d9e6; text-wrap: balance; /* איזון שורות למניעת מילים בודדות */
         }
-
-        .headline strong { color: #fff; font-weight: 700; }
-        .highlight { 
-            color: var(--accent); 
-            font-weight: 700; 
-            white-space: nowrap; /* מונע מהמילה highlight להישבר באמצע */
-        }
+        .highlight { color: #fff; font-weight: 700; border-bottom: 1px solid var(--accent); }
 
         .cta {
-            display: inline-block;
-            padding: 22px 80px;
-            background: var(--accent);
-            color: #000;
-            text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 4px;
-            font-weight: 900;
-            transition: all 0.3s ease;
-            border: 1px solid var(--accent);
+            display: inline-block; padding: 20px 70px;
+            background: var(--accent); color: #000;
+            text-decoration: none; font-family: 'Orbitron', sans-serif;
+            letter-spacing: 4px; font-weight: 900; transition: 0.4s;
         }
+        .cta:hover { background: #fff; box-shadow: 0 0 40px rgba(255, 140, 0, 0.3); }
 
-        .cta:hover { 
-            background: transparent; 
-            color: var(--accent);
-            box-shadow: 0 0 40px rgba(255, 140, 0, 0.4);
-        }
-
-        /* אלמנטים הנדסיים בפינות */
         .hud {
             position: absolute; font-size: 10px; color: var(--accent); 
-            opacity: 0.4; font-family: monospace; letter-spacing: 1px;
+            opacity: 0.4; font-family: monospace;
         }
         .tl { top: 20px; left: 25px; text-align: left; }
         .br { bottom: 20px; right: 25px; text-align: right; }
 
         @media (max-width: 768px) {
-            .container { border: none; background: transparent; padding-top: 40px; }
+            .container { border: none; background: transparent; padding-top: 60px; }
             .hud { display: none; }
-            .cta { width: 100%; padding: 20px 0; }
+            .cta { width: 100%; padding: 18px 0; }
         }
     </style>
 </head>
 <body>
 
-<div class="background">
-    <div class="grid-layer"></div>
+<div id="boot-screen">
+    <div id="boot-log"></div>
 </div>
 
-<div id="scene">
+<div id="main-site">
+    <div class="background"><div class="grid-layer"></div></div>
+    
     <div class="container">
-        <div class="hud tl">CORE_V1: ENFORCED<br>ISOLATION: HARDWARE<br>SECURE_BOOT: OK</div>
+        <div class="hud tl">
+            [SYS_INIT: OK]<br>
+            [KERNEL_ISOLATION: ENFORCED]<br>
+            [HARDWARE_TRUST: VERIFIED]
+        </div>
 
-        <h1>Mission-Critical Infrastructure</h1>
+        <h1>Satellite Operating System</h1>
         
         <img src="logo.png" class="logo" alt="DYON Systems">
 
@@ -145,11 +135,50 @@
             on satellites with <span class="highlight">Zero-Mission-Risk</span>.
         </p>
 
-        <a href="mailto:contact@dyonsystems.com" class="cta">ESTABLISH CONNECTION</a>
+        <a href="mailto:idanva13@gmail.com" class="cta">Connect Node</a>
 
-        <div class="hud br">LOC: LEO_ORBITAL<br>OS_INTEL: DYON_PROTOTYPE<br>v1.0.26</div>
+        <div class="hud br">
+            v1.0.26_STABLE<br>
+            LOC: LEO_FRAME<br>
+            MODE: SECURE_OS
+        </div>
     </div>
 </div>
+
+<script>
+    const log = document.getElementById('boot-log');
+    const screen = document.getElementById('boot-screen');
+    const site = document.getElementById('main-site');
+
+    const sequence = [
+        "> INITIALIZING SECURE_BOOT_v1.0.26...",
+        "> CHECKING HARDWARE INTEGRITY... [OK]",
+        "> LOADING ISOLATION KERNEL...",
+        "> ESTABLISHING TRUSTED ENCLAVE...",
+        "> DYON_OS_CORE: ONLINE.",
+        "> ACCESS GRANTED."
+    ];
+
+    let i = 0;
+    function runBoot() {
+        if (i < sequence.length) {
+            const line = document.createElement('div');
+            line.textContent = sequence[i];
+            log.appendChild(line);
+            i++;
+            setTimeout(runBoot, Math.random() * 400 + 200);
+        } else {
+            setTimeout(() => {
+                screen.style.opacity = '0';
+                setTimeout(() => {
+                    screen.style.display = 'none';
+                    site.classList.add('active');
+                }, 800);
+            }, 500);
+        }
+    }
+    window.onload = runBoot;
+</script>
 
 </body>
 </html>
