@@ -4,46 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DYON Systems | Next-Gen Satellite OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #0b0e14;
+            background: radial-gradient(circle at center, #1a1f2c 0%, #0b0e14 100%);
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* רקע עדין של כוכבים */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .hero-container {
             text-align: center;
+            max-width: 900px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        .container { max-width: 800px; padding: 20px; }
-        h1 { font-size: 3rem; margin-bottom: 10px; letter-spacing: 2px; color: #4facfe; }
-        p { font-size: 1.2rem; line-height: 1.6; color: #a0a0a0; }
-        .tagline { font-weight: bold; color: #ffffff; margin-bottom: 30px; }
-        .status {
-            display: inline-block;
-            padding: 8px 20px;
-            border: 1px solid #4facfe;
-            border-radius: 20px;
-            font-size: 0.9rem;
+
+        .logo {
+            width: 280px; /* התאמה לגודל הלוגו שלך */
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 10px rgba(79, 172, 254, 0.3));
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
             color: #4facfe;
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
-        .footer { position: absolute; bottom: 30px; font-size: 0.8rem; color: #555; }
-        a { color: #4facfe; text-decoration: none; }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(79, 172, 254, 0.1);
+            border: 1px solid #4facfe;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #4facfe;
+            text-transform: uppercase;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 14px 32px;
+            background: #4facfe;
+            color: #0b0e14;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4);
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>DYON Systems</h1>
-        <p class="tagline">Redefining Satellite Reliability</p>
-        <p>The first standardized hybrid Operating System for the NewSpace era. Enabling high-performance Edge-AI with zero mission risk through hardware-enforced isolation.</p>
-        <div class="status">Currently in Stealth Mode | POC Scheduled for Q4 2026</div>
-        <p style="margin-top: 40px;">Contact: <a href="mailto:contact@dyonsystems.com">contact@dyonsystems.com</a></p>
-    </div>
-    <div class="footer">
-        © 2026 DYON Systems - Idan Capital Aerospace Division. All rights reserved.
+    <div class="hero-container">
+        <img src="DYON Logo.png" alt="DYON Systems Logo" class="logo">
+        
+        <h2>Redefining Satellite Reliability</h2>
+        
+        <p>Architecting the first standardized hybrid Operating System for the NewSpace era. <br>
+           Ensuring seamless Edge-AI integration with zero mission risk through hardware-enforced isolation.</p>
+        
+        <div class="status-badge">Currently in Stealth Mode | POC Scheduled Q4 2026</div>
+        <br>
+        <a href="mailto:contact@dyonsystems.com" class="contact-btn">Get in Touch</a>
     </div>
 </body>
 </html>
