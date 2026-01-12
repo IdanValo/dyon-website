@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DYON Systems | Orbital Intelligence</title>
+<title>DYON Systems — Autonomous Satellite Operating Systems</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600;700&family=Plus+Jakarta+Sans:wght@200;400;700&display=swap" rel="stylesheet">
 
@@ -26,7 +26,7 @@ html,body{
     overflow:hidden;
 }
 
-/* STARFIELD */
+/* ===== STARFIELD ===== */
 .stars, .stars::after{
     position:fixed;
     width:200%;
@@ -35,35 +35,34 @@ html,body{
         radial-gradient(1px 1px at 20% 30%,#fff,transparent),
         radial-gradient(1px 1px at 80% 70%,#fff,transparent),
         radial-gradient(1px 1px at 50% 50%,#fff,transparent);
-    animation: drift 120s linear infinite;
+    animation: drift 140s linear infinite;
     opacity:.25;
 }
 .stars::after{
     content:"";
-    animation-duration:200s;
+    animation-duration:220s;
     opacity:.15;
 }
 @keyframes drift{
-    from{transform:translate(0,0)}
-    to{transform:translate(-500px,-500px)}
+    to{transform:translate(-600px,-600px)}
 }
 
-/* NEBULA */
+/* ===== NEBULA ===== */
 .nebula{
     position:fixed;
     inset:0;
     background:
         radial-gradient(circle at 20% 30%,rgba(0,210,255,.12),transparent 40%),
         radial-gradient(circle at 80% 70%,rgba(120,0,255,.1),transparent 45%);
-    filter:blur(80px);
-    animation:nebula 18s ease-in-out infinite alternate;
+    filter:blur(90px);
+    animation:nebula 20s ease-in-out infinite alternate;
 }
 @keyframes nebula{
     from{opacity:.5}
     to{opacity:.9}
 }
 
-/* GRID */
+/* ===== GRID ===== */
 .grid{
     position:fixed;
     inset:0;
@@ -71,14 +70,14 @@ html,body{
         linear-gradient(rgba(0,210,255,.035) 1px,transparent 1px),
         linear-gradient(90deg,rgba(0,210,255,.035) 1px,transparent 1px);
     background-size:60px 60px;
-    animation:gridMove 60s linear infinite;
+    animation:gridMove 70s linear infinite;
     pointer-events:none;
 }
 @keyframes gridMove{
-    to{background-position:120px 120px}
+    to{background-position:140px 140px}
 }
 
-/* HERO */
+/* ===== HERO ===== */
 .hero{
     position:relative;
     z-index:5;
@@ -92,41 +91,63 @@ html,body{
 
 .hero-inner{
     max-width:1100px;
-    animation:enter 1.4s ease-out forwards;
     opacity:0;
+    animation:enter 1.4s ease-out forwards;
 }
 @keyframes enter{
-    to{opacity:1;transform:translateY(0)}
     from{opacity:0;transform:translateY(40px)}
+    to{opacity:1;transform:translateY(0)}
 }
 
-/* LOGO */
+/* ===== LOGO + ORBIT ===== */
+.logo-wrap{
+    position:relative;
+    display:inline-block;
+    margin-bottom:55px;
+}
+
 .logo{
     width:620px;
     max-width:100%;
-    margin-bottom:50px;
-    filter:drop-shadow(0 0 60px rgba(0,210,255,.35));
+    filter:drop-shadow(0 0 70px rgba(0,210,255,.4));
     animation:logoPulse 7s ease-in-out infinite;
 }
 @keyframes logoPulse{
-    50%{transform:scale(1.03);filter:drop-shadow(0 0 90px rgba(0,210,255,.55))}
+    50%{transform:scale(1.03);filter:drop-shadow(0 0 100px rgba(0,210,255,.6))}
 }
 
-/* ORBIT LINE */
-.orbit{
+.orbit-ring{
+    position:absolute;
+    inset:-35px;
+    border:1px solid rgba(0,210,255,.25);
+    border-radius:50%;
+    animation:spin 40s linear infinite;
+}
+.orbit-dot{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:8px;
+    height:8px;
+    background:var(--accent);
+    border-radius:50%;
+    transform:translateX(180px);
+    box-shadow:0 0 20px var(--accent);
+}
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+
+/* ===== ORBIT LINE ===== */
+.orbit-line{
     width:420px;
     height:2px;
     margin:0 auto 40px;
     background:linear-gradient(90deg,transparent,var(--accent),transparent);
-    box-shadow:0 0 25px var(--accent);
-    animation:scan 4s linear infinite;
-}
-@keyframes scan{
-    from{opacity:.3}
-    to{opacity:1}
+    box-shadow:0 0 30px var(--accent);
 }
 
-/* TITLE */
+/* ===== TEXT ===== */
 h1{
     font-family:'Space Grotesk',sans-serif;
     letter-spacing:14px;
@@ -138,7 +159,6 @@ h1{
     text-shadow:0 0 20px rgba(0,210,255,.4);
 }
 
-/* TEXT */
 .desc{
     font-size:1.55rem;
     line-height:1.65;
@@ -151,7 +171,7 @@ h1{
     font-weight:700;
 }
 
-/* CTA */
+/* ===== CTA ===== */
 .cta{
     display:inline-block;
     padding:22px 75px;
@@ -172,11 +192,30 @@ h1{
     letter-spacing:7px;
 }
 
-/* MOBILE */
+.micro{
+    margin-top:14px;
+    font-size:.75rem;
+    opacity:.55;
+}
+
+/* ===== TELEMETRY ===== */
+.telemetry{
+    position:fixed;
+    bottom:30px;
+    left:30px;
+    font-family:'Space Grotesk',monospace;
+    font-size:.7rem;
+    line-height:1.6;
+    opacity:.45;
+    letter-spacing:1px;
+}
+
+/* ===== MOBILE ===== */
 @media(max-width:768px){
     h1{letter-spacing:7px;font-size:.8rem}
     .desc{font-size:1.2rem}
     .cta{padding:18px 0;width:85%}
+    .telemetry{display:none}
 }
 </style>
 </head>
@@ -189,22 +228,45 @@ h1{
 
 <section class="hero">
     <div class="hero-inner">
-        <img src="logo.png" class="logo" alt="DYON Systems">
 
-        <div class="orbit"></div>
+        <div class="logo-wrap">
+            <div class="orbit-ring">
+                <div class="orbit-dot"></div>
+            </div>
+            <img src="logo.png" class="logo" alt="DYON Systems">
+        </div>
+
+        <div class="orbit-line"></div>
 
         <h1>Satellite Operating Systems</h1>
 
         <p class="desc">
-            Architecting <strong>Hybrid Orbital Infrastructure</strong><br>
-            Autonomous resilience through hardware-enforced isolation.
+            Architecting hybrid orbital infrastructure<br>
+            for the NewSpace era.<br><br>
+            We design autonomous satellite operating systems
+            for environments where failure is not an option —
+            combining <strong>hardware-enforced isolation</strong>,
+            mission-critical reliability,
+            and long-term operational resilience
+            from LEO to deep space.
         </p>
 
         <a href="mailto:idanva13@gmail.com" class="cta">
-            Establish Connection
+            Open Orbital Channel
         </a>
+        <div class="micro">
+            Secure communication channel · No marketing · No noise
+        </div>
+
     </div>
 </section>
+
+<div class="telemetry">
+ORBITAL NODE: DYON-01<br>
+SYSTEM STATUS: OPERATIONAL<br>
+AUTONOMY MODE: ENABLED<br>
+ISOLATION LAYER: ACTIVE
+</div>
 
 </body>
 </html>
