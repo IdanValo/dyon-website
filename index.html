@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DYON Systems | Next-Gen Satellite OS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;700&display=swap" rel="stylesheet">
+    <title>DYON Systems | Redefining Space OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #4facfe;
-            --deep-space: #0a0d14;
+            --dyon-blue-light: #00eaff; /* כחול בהיר זוהר */
+            --dyon-blue-dark: #00aaff;  /* כחול כהה יותר */
+            --background-dark: #020508;
+            --text-light: #e0f2f7;
+            --text-accent: #aaffff;
         }
 
         body, html {
@@ -16,117 +19,182 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--deep-space);
-            /* תאורה אחורית כדי שהלוגו הכהה יבלוט */
-            background: radial-gradient(circle at center, #1e2638 0%, #0a0d14 100%);
-            color: #ffffff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace; /* פונט טכני */
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-        }
-
-        /* הריבוע הצף - עכשיו גדול ומרשים יותר */
-        .glass-panel {
             position: relative;
-            z-index: 1;
-            width: 85%;
-            max-width: 1000px; /* הגדלתי את הרוחב המקסימלי */
-            padding: 80px 50px;
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            text-align: center;
-            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6);
-            animation: slideUp 1.2s ease-out;
         }
 
-        /* לוגו ענק */
-        .logo-wrapper {
-            margin-bottom: 50px;
+        /* רקע דינמי עם גלואו עדין */
+        .background-glow {
+            position: absolute;
+            width: 150vw; /* גדול יותר מהמסך */
+            height: 150vh;
+            background: 
+                radial-gradient(circle at 30% 70%, rgba(0, 170, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 70% 30%, rgba(0, 234, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(0, 234, 255, 0.02) 0%, transparent 60%);
+            animation: backgroundShift 60s infinite alternate linear; /* אנימציה איטית */
+            z-index: -1;
         }
 
-        .logo-img {
-            width: 550px; /* לוגו סופר בולט */
-            max-width: 95%;
-            /* צל לבן עדין מאוד מסביב ללוגו כדי להפריד אותו מהרקע הכהה */
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
+        @keyframes backgroundShift {
+            from { transform: translate(-25%, -25%); }
+            to { transform: translate(25%, 25%); }
         }
 
-        .tagline {
-            font-size: 1.6rem;
-            font-weight: 200;
-            letter-spacing: 10px;
-            text-transform: uppercase;
-            color: var(--primary-blue);
-            margin-bottom: 35px;
-        }
-
-        .main-text {
-            font-size: 1.4rem;
-            line-height: 1.6;
-            color: #d1d5db;
-            max-width: 800px;
-            margin: 0 auto 50px auto;
-            font-weight: 300;
-        }
-
-        .bold-white {
-            color: #ffffff;
-            font-weight: 700;
-        }
-
-        /* כפתור יוקרתי רחב */
-        .cta-button {
-            display: inline-block;
-            padding: 20px 55px;
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: #05070a;
-            text-decoration: none;
+        /* קונטיינר מרכזי עם אפקט "ממשק" */
+        .main-interface {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px;
+            max-width: 900px;
+            width: 80%;
+            background: rgba(0, 0, 0, 0.4); /* כהה ושקוף יותר */
+            border: 2px solid var(--dyon-blue-dark); /* מסגרת כחולה */
             border-radius: 15px;
-            font-weight: 800;
+            box-shadow: 0 0 50px rgba(0, 170, 255, 0.6), inset 0 0 20px rgba(0, 170, 255, 0.3); /* גלואו כפול */
+            animation: interfaceLoad 2s ease-out forwards;
+            opacity: 0; /* מתחיל שקוף */
+            position: relative;
+        }
+
+        @keyframes interfaceLoad {
+            from { opacity: 0; transform: translateY(30px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* לוגו עם אפקט טעינה/סריקה */
+        .logo-display {
+            position: relative;
+            margin-bottom: 40px;
+            animation: logoPulse 3s infinite alternate ease-in-out;
+        }
+
+        .logo-display img {
+            width: 450px; /* גדול מאוד */
+            max-width: 100%;
+            filter: drop-shadow(0 0 30px rgba(0, 234, 255, 0.8)); /* גלואו חזק */
+            opacity: 0;
+            animation: logoFadeIn 1s 1s forwards; /* מופיע אחרי שנייה */
+        }
+
+        @keyframes logoFadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes logoPulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(0, 234, 255, 0.5)); }
+            50% { transform: scale(1.02); filter: drop-shadow(0 0 40px rgba(0, 234, 255, 1)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(0, 234, 255, 0.5)); }
+        }
+
+        /* כותרות וטקסטים בסגנון ממשק */
+        .system-status {
+            font-family: 'Orbitron', sans-serif; /* פונט עתידני */
+            font-size: 1.8rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--text-accent);
+            margin-bottom: 25px;
+            opacity: 0;
+            animation: textFadeIn 1s 2s forwards; /* מופיע אחרי 2 שניות */
+        }
+
+        .system-description {
             font-size: 1.1rem;
-            letter-spacing: 1px;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            line-height: 1.6;
+            text-align: center;
+            max-width: 700px;
+            margin-bottom: 40px;
+            color: var(--text-light);
+            opacity: 0;
+            animation: textFadeIn 1s 2.5s forwards; /* מופיע אחרי 2.5 שניות */
         }
 
-        .cta-button:hover {
+        .highlight-text {
+            color: var(--dyon-blue-light);
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(0, 234, 255, 0.5);
+        }
+
+        @keyframes textFadeIn {
+            to { opacity: 1; }
+        }
+
+        /* כפתור "Boot" דינמי */
+        .boot-button {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(45deg, var(--dyon-blue-dark) 0%, var(--dyon-blue-light) 100%);
+            color: var(--background-dark);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 0 25px rgba(0, 234, 255, 0.6);
+            transition: all 0.3s ease-in-out;
+            animation: buttonPulse 2s infinite alternate; /* אנימציה של כפתור פועם */
+            opacity: 0;
+            animation: buttonFadeIn 1s 3s forwards, buttonPulse 2s infinite alternate 4s; /* מופיע ואז פועם */
+        }
+
+        .boot-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 20px 40px rgba(79, 172, 254, 0.4);
+            box-shadow: 0 0 40px rgba(0, 234, 255, 1);
+            background: linear-gradient(45deg, var(--dyon-blue-light) 0%, var(--dyon-blue-dark) 100%);
         }
 
-        .footer-note {
-            margin-top: 50px;
+        @keyframes buttonFadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes buttonPulse {
+            0% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 234, 255, 0.6); }
+            100% { transform: scale(1.01); box-shadow: 0 0 35px rgba(0, 234, 255, 0.9); }
+        }
+
+        /* הערת תחתית קטנה */
+        .footer-terminal {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
             font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.3);
-            letter-spacing: 3px;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+            color: rgba(0, 234, 255, 0.5);
+            letter-spacing: 1px;
+            animation: textFadeIn 1s 3.5s forwards;
+            opacity: 0;
         }
     </style>
 </head>
 <body>
-    <div class="glass-panel">
-        <div class="logo-wrapper">
-            <img src="logo.png" alt="DYON Systems" class="logo-img">
+    <div class="background-glow"></div>
+    
+    <div class="main-interface">
+        <div class="logo-display">
+            <img src="logo.png" alt="DYON Systems Logo">
         </div>
 
-        <div class="tagline">Orbital Infrastructure</div>
+        <div class="system-status">SYSTEM READY FOR DEPLOYMENT</div>
         
-        <p class="main-text">
-            Architecting the first <span class="bold-white">Standardized Hybrid OS</span> for the NewSpace era. <br>
-            Bridging high-performance Edge-AI with mission-critical reliability.
+        <p class="system-description">
+            DYON Systems is engineering the <span class="highlight-text">Hybrid OS architecture</span> for the NewSpace era, <br>
+            enabling unprecedented <span class="highlight-text">Edge-AI performance</span> with <span class="highlight-text">zero mission-critical risk</span>.
         </p>
         
-        <a href="mailto:contact@dyonsystems.com" class="cta-button">PARTNERSHIP INQUIRIES</a>
-        
-        <div class="footer-note">STEALTH MODE · Q4 2026 MISSION</div>
+        <a href="mailto:contact@dyonsystems.com" class="boot-button">INITIATE SECURE COMMS</a>
+    </div>
+
+    <div class="footer-terminal">
+        &gt; DYON_OS // v1.0.26 | Operational Integrity Check Complete.
     </div>
 </body>
 </html>
