@@ -1,272 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DYON Systems — Autonomous Satellite Operating Systems</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DYON Systems | High-Reliability Satellite OS</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600;700&family=Plus+Jakarta+Sans:wght@200;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Plus+Jakarta+Sans:wght@200;400;700&display=swap" rel="stylesheet">
 
-<style>
-:root{
-    --accent:#00d2ff;
-    --bg:#030814;
-    --text:#d6e2f0;
-}
+    <style>
+        :root {
+            --accent: #00d2ff;
+            --bg: #020610;
+            --text-muted: #94a3b8;
+        }
 
-*{box-sizing:border-box}
+        * { box-sizing: border-box; }
 
-html,body{
-    margin:0;
-    width:100%;
-    height:100%;
-    background:radial-gradient(circle at center,#08142c 0%,var(--bg) 70%);
-    font-family:'Plus Jakarta Sans',sans-serif;
-    color:white;
-    overflow:hidden;
-}
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: white;
+            overflow: hidden;
+            cursor: crosshair;
+        }
 
-/* ===== STARFIELD ===== */
-.stars, .stars::after{
-    position:fixed;
-    width:200%;
-    height:200%;
-    background:
-        radial-gradient(1px 1px at 20% 30%,#fff,transparent),
-        radial-gradient(1px 1px at 80% 70%,#fff,transparent),
-        radial-gradient(1px 1px at 50% 50%,#fff,transparent);
-    animation: drift 140s linear infinite;
-    opacity:.25;
-}
-.stars::after{
-    content:"";
-    animation-duration:220s;
-    opacity:.15;
-}
-@keyframes drift{
-    to{transform:translate(-600px,-600px)}
-}
+        /* ===== BACKGROUND ELEMENTS ===== */
+        .stars-container {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, #0a1b3d 0%, var(--bg) 80%);
+            z-index: 0;
+        }
 
-/* ===== NEBULA ===== */
-.nebula{
-    position:fixed;
-    inset:0;
-    background:
-        radial-gradient(circle at 20% 30%,rgba(0,210,255,.12),transparent 40%),
-        radial-gradient(circle at 80% 70%,rgba(120,0,255,.1),transparent 45%);
-    filter:blur(90px);
-    animation:nebula 20s ease-in-out infinite alternate;
-}
-@keyframes nebula{
-    from{opacity:.5}
-    to{opacity:.9}
-}
+        .nebula {
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 15% 25%, rgba(0, 210, 255, 0.08), transparent 40%),
+                radial-gradient(circle at 85% 75%, rgba(112, 0, 255, 0.07), transparent 45%);
+            filter: blur(100px);
+            animation: pulseNebula 15s ease-in-out infinite alternate;
+        }
 
-/* ===== GRID ===== */
-.grid{
-    position:fixed;
-    inset:0;
-    background-image:
-        linear-gradient(rgba(0,210,255,.035) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(0,210,255,.035) 1px,transparent 1px);
-    background-size:60px 60px;
-    animation:gridMove 70s linear infinite;
-    pointer-events:none;
-}
-@keyframes gridMove{
-    to{background-position:140px 140px}
-}
+        @keyframes pulseNebula { from { opacity: 0.5; } to { opacity: 0.8; } }
 
-/* ===== HERO ===== */
-.hero{
-    position:relative;
-    z-index:5;
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:40px;
-}
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(0, 210, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 210, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-.hero-inner{
-    max-width:1100px;
-    opacity:0;
-    animation:enter 1.4s ease-out forwards;
-}
-@keyframes enter{
-    from{opacity:0;transform:translateY(40px)}
-    to{opacity:1;transform:translateY(0)}
-}
+        /* ===== SCANLINE EFFECT ===== */
+        body::before {
+            content: " ";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 4px, 3px 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
 
-/* ===== LOGO + ORBIT ===== */
-.logo-wrap{
-    position:relative;
-    display:inline-block;
-    margin-bottom:55px;
-}
+        /* ===== HERO SECTION ===== */
+        .hero {
+            position: relative;
+            z-index: 5;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
 
-.logo{
-    width:620px;
-    max-width:100%;
-    filter:drop-shadow(0 0 70px rgba(0,210,255,.4));
-    animation:logoPulse 7s ease-in-out infinite;
-}
-@keyframes logoPulse{
-    50%{transform:scale(1.03);filter:drop-shadow(0 0 100px rgba(0,210,255,.6))}
-}
+        .hero-inner {
+            max-width: 1000px;
+            animation: fadeIn 1.8s ease-out;
+        }
 
-.orbit-ring{
-    position:absolute;
-    inset:-35px;
-    border:1px solid rgba(0,210,255,.25);
-    border-radius:50%;
-    animation:spin 40s linear infinite;
-}
-.orbit-dot{
-    position:absolute;
-    top:50%;
-    left:50%;
-    width:8px;
-    height:8px;
-    background:var(--accent);
-    border-radius:50%;
-    transform:translateX(180px);
-    box-shadow:0 0 20px var(--accent);
-}
-@keyframes spin{
-    to{transform:rotate(360deg)}
-}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ===== ORBIT LINE ===== */
-.orbit-line{
-    width:420px;
-    height:2px;
-    margin:0 auto 40px;
-    background:linear-gradient(90deg,transparent,var(--accent),transparent);
-    box-shadow:0 0 30px var(--accent);
-}
+        /* ===== LOGO AREA ===== */
+        .logo-box {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 40px;
+        }
 
-/* ===== TEXT ===== */
-h1{
-    font-family:'Space Grotesk',sans-serif;
-    letter-spacing:14px;
-    font-weight:300;
-    font-size:1rem;
-    text-transform:uppercase;
-    color:var(--accent);
-    margin-bottom:35px;
-    text-shadow:0 0 20px rgba(0,210,255,.4);
-}
+        .logo-main {
+            width: 580px;
+            max-width: 90vw;
+            filter: drop-shadow(0 0 50px rgba(0, 210, 255, 0.3));
+            animation: breathe 6s ease-in-out infinite;
+        }
 
-.desc{
-    font-size:1.55rem;
-    line-height:1.65;
-    color:var(--text);
-    font-weight:200;
-    margin-bottom:60px;
-}
-.desc strong{
-    color:#fff;
-    font-weight:700;
-}
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.02); opacity: 1; }
+        }
 
-/* ===== CTA ===== */
-.cta{
-    display:inline-block;
-    padding:22px 75px;
-    border:1px solid rgba(0,210,255,.4);
-    color:#fff;
-    text-decoration:none;
-    letter-spacing:5px;
-    font-family:'Space Grotesk',sans-serif;
-    text-transform:uppercase;
-    background:rgba(0,210,255,.05);
-    transition:.6s cubic-bezier(.19,1,.22,1);
-    box-shadow:0 0 40px rgba(0,210,255,.15);
-}
-.cta:hover{
-    background:rgba(0,210,255,.15);
-    box-shadow:0 0 80px rgba(0,210,255,.45);
-    transform:translateY(-3px);
-    letter-spacing:7px;
-}
+        /* ===== TEXT CONTENT ===== */
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 12px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
 
-.micro{
-    margin-top:14px;
-    font-size:.75rem;
-    opacity:.55;
-}
+        .main-headline {
+            font-size: 1.45rem;
+            line-height: 1.6;
+            font-weight: 200;
+            color: #f1f5f9;
+            margin-bottom: 50px;
+        }
 
-/* ===== TELEMETRY ===== */
-.telemetry{
-    position:fixed;
-    bottom:30px;
-    left:30px;
-    font-family:'Space Grotesk',monospace;
-    font-size:.7rem;
-    line-height:1.6;
-    opacity:.45;
-    letter-spacing:1px;
-}
+        .main-headline strong {
+            color: #fff;
+            font-weight: 600;
+            border-bottom: 1px solid var(--accent);
+        }
 
-/* ===== MOBILE ===== */
-@media(max-width:768px){
-    h1{letter-spacing:7px;font-size:.8rem}
-    .desc{font-size:1.2rem}
-    .cta{padding:18px 0;width:85%}
-    .telemetry{display:none}
-}
-</style>
+        /* ===== BUTTONS ===== */
+        .btn-orbital {
+            display: inline-block;
+            padding: 22px 65px;
+            background: rgba(0, 210, 255, 0.03);
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            color: white;
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-orbital:hover {
+            background: var(--accent);
+            color: #020610;
+            box-shadow: 0 0 50px rgba(0, 210, 255, 0.4);
+            letter-spacing: 6px;
+            transform: translateY(-2px);
+        }
+
+        .status-footer {
+            margin-top: 20px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ===== HUD TELEMETRY ===== */
+        .hud {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 0.65rem;
+            color: var(--accent);
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .main-headline { font-size: 1.15rem; }
+            .logo-main { width: 95%; }
+            .hud { display: none; }
+            .btn-orbital { width: 100%; padding: 18px 0; }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="stars"></div>
-<div class="nebula"></div>
-<div class="grid"></div>
-
-<section class="hero">
-    <div class="hero-inner">
-
-        <div class="logo-wrap">
-            <div class="orbit-ring">
-                <div class="orbit-dot"></div>
-            </div>
-            <img src="logo.png" class="logo" alt="DYON Systems">
-        </div>
-
-        <div class="orbit-line"></div>
-
-        <h1>Satellite Operating Systems</h1>
-
-        <p class="desc">
-            Architecting hybrid orbital infrastructure<br>
-            for the NewSpace era.<br><br>
-            We design autonomous satellite operating systems
-            for environments where failure is not an option —
-            combining <strong>hardware-enforced isolation</strong>,
-            mission-critical reliability,
-            and long-term operational resilience
-            from LEO to deep space.
-        </p>
-
-        <a href="mailto:idanva13@gmail.com" class="cta">
-            Open Orbital Channel
-        </a>
-        <div class="micro">
-            Secure communication channel · No marketing · No noise
-        </div>
-
+    <div class="stars-container">
+        <div class="nebula"></div>
+        <div class="grid-overlay"></div>
     </div>
-</section>
 
-<div class="telemetry">
-ORBITAL NODE: DYON-01<br>
-SYSTEM STATUS: OPERATIONAL<br>
-AUTONOMY MODE: ENABLED<br>
-ISOLATION LAYER: ACTIVE
-</div>
+    <main class="hero">
+        <div class="hero-inner">
+            
+            <div class="logo-box">
+                <img src="logo.png" class="logo-main" alt="DYON Systems">
+            </div>
+
+            <h1>The Standard for Orbital Autonomy</h1>
+
+            <p class="main-headline">
+                Designing the <strong>Hybrid Infrastructure</strong> for the NewSpace era.<br>
+                Bridging high-performance Edge-AI with zero-risk mission integrity<br>
+                through <strong>hardware-enforced isolation</strong>.
+            </p>
+
+            <a href="mailto:idanva13@gmail.com" class="btn-orbital">Establish Connection</a>
+            
+            <div class="status-footer">
+                Stealth Mission · LEO to Deep Space · 2026 Deployment
+            </div>
+        </div>
+    </main>
+
+    <div class="hud">
+        NODE: DYON_V1 // STATUS: SECURE<br>
+        KERNEL: ISOLATED // AI_LINK: READY<br>
+        LATENCY: OPTIMAL // MISSION: STEALTH
+    </div>
 
 </body>
 </html>
