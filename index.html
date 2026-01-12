@@ -17,12 +17,11 @@
             color: #fff;
             font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden; /* מונע גלילה לצדדים בטלפון */
         }
 
-        /* רקע ערפילית דינמי - חלק מאוד */
         .nebula {
-            position: absolute; width: 100%; height: 100%;
+            position: fixed; width: 100%; height: 100%;
             background: 
                 radial-gradient(circle at 20% 30%, rgba(0, 210, 255, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(112, 0, 255, 0.05) 0%, transparent 50%);
@@ -36,132 +35,125 @@
             to { transform: scale(1.2); opacity: 0.8; }
         }
 
-        /* הקונטיינר הראשי - עכשיו בלי ריבוע מגביל, רק עומק */
         .hero-section {
             text-align: center;
-            width: 100%; max-width: 1200px;
+            width: 90%; /* תופס פחות מקום בטלפון למניעת היצמדות לקצוות */
+            max-width: 1200px;
             z-index: 10;
+            padding: 20px;
         }
 
-        /* לוגו ענק עם אפקט "נשימה" */
         .logo-container {
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             perspective: 1000px;
         }
 
         .logo-img {
-            width: 620px; /* מסיבי ובולט */
-            max-width: 85%;
+            width: 620px; 
+            max-width: 100%; /* מבטיח שהלוגו לעולם לא יחרוג מהמסך */
+            height: auto;
             filter: drop-shadow(0 0 30px rgba(0, 210, 255, 0.2));
             animation: logoBreathe 8s infinite ease-in-out;
         }
 
         @keyframes logoBreathe {
-            0%, 100% { transform: scale(1) translateZ(0); filter: drop-shadow(0 0 30px rgba(0, 210, 255, 0.2)); }
-            50% { transform: scale(1.03) translateZ(50px); filter: drop-shadow(0 0 60px rgba(0, 210, 255, 0.4)); }
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(0, 210, 255, 0.2)); }
+            50% { transform: scale(1.03); filter: drop-shadow(0 0 50px rgba(0, 210, 255, 0.4)); }
         }
 
-        /* כותרת מינימליסטית ועוצמתית */
         h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 300;
-            letter-spacing: 18px; /* ריווח אותיות יוקרתי */
+            letter-spacing: 12px;
             text-transform: uppercase;
             color: var(--accent-blue);
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             opacity: 0;
             animation: fadeInLettering 2s 1s forwards;
         }
 
         @keyframes fadeInLettering {
-            from { opacity: 0; letter-spacing: 30px; filter: blur(10px); }
-            to { opacity: 0.8; letter-spacing: 18px; filter: blur(0); }
+            from { opacity: 0; letter-spacing: 20px; filter: blur(10px); }
+            to { opacity: 0.8; letter-spacing: 12px; filter: blur(0); }
         }
 
-        /* טקסט תיאור נקי */
         .description {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            max-width: 850px;
-            margin: 0 auto 60px auto;
+            font-size: 1.4rem;
+            line-height: 1.5;
+            max-width: 800px;
+            margin: 0 auto 50px auto;
             font-weight: 200;
             color: #cbd5e1;
             opacity: 0;
             animation: fadeInUp 1.5s 2s forwards;
         }
 
-        .highlight {
-            color: #fff;
-            font-weight: 800;
-        }
-
-        /* כפתור ה-Elite */
         .cta-button {
             display: inline-block;
-            padding: 20px 60px;
+            padding: 18px 50px;
             background: transparent;
             color: #fff;
             text-decoration: none;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
+            border-radius: 4px;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem;
-            letter-spacing: 4px;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
             transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            position: relative;
             opacity: 0;
             animation: fadeInUp 1.5s 2.5s forwards;
         }
 
         .cta-button:hover {
             border-color: var(--accent-blue);
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.2);
             background: rgba(0, 210, 255, 0.05);
-            box-shadow: 0 0 40px rgba(0, 210, 255, 0.2);
-            letter-spacing: 6px;
         }
 
-        /* סטטוס צדדי קטן - נראה כמו נתון טכני */
-        .mission-status {
-            position: absolute;
-            bottom: 40px;
-            left: 40px;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            color: rgba(255, 255, 255, 0.3);
-            font-family: monospace;
+        /* התאמות לנייד (Mobile) */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 0.8rem;
+                letter-spacing: 6px;
+                margin-bottom: 20px;
+            }
+            @keyframes fadeInLettering {
+                from { opacity: 0; letter-spacing: 12px; filter: blur(10px); }
+                to { opacity: 0.8; letter-spacing: 6px; filter: blur(0); }
+            }
+            .description {
+                font-size: 1.1rem;
+                padding: 0 10px;
+            }
+            .logo-img {
+                width: 90%; /* לוגו גדול אבל לא חורג */
+            }
+            .cta-button {
+                padding: 15px 40px;
+                width: 80%; /* כפתור רחב ונוח ללחיצה בטלפון */
+            }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
     </style>
 </head>
 <body>
-
     <div class="nebula"></div>
-    
     <section class="hero-section">
         <div class="logo-container">
             <img src="logo.png" alt="DYON Systems" class="logo-img">
         </div>
-
         <h1>Satellite Operating Systems</h1>
-        
         <p class="description">
-            Architecting <span class="highlight">Hybrid Infrastructure</span> for the NewSpace Era. <br>
+            Architecting <strong>Hybrid Infrastructure</strong> for the NewSpace Era. <br>
             Autonomous reliability through hardware-enforced isolation.
         </p>
-        
         <a href="mailto:idanva13@gmail.com" class="cta-button">Establish Connection</a>
     </section>
-
-    <div class="mission-status">
-        [ STEALTH MODE ] // OPERATIONAL_CHECK: OK // Q4_2026
-    </div>
-
 </body>
 </html>
