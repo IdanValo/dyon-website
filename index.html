@@ -8,7 +8,7 @@
     <style>
         :root {
             --primary-blue: #4facfe;
-            --deep-space: #05070a;
+            --deep-space: #0a0d14;
         }
 
         body, html {
@@ -17,6 +17,8 @@
             width: 100%;
             height: 100%;
             background-color: var(--deep-space);
+            /* תאורה אחורית כדי שהלוגו הכהה יבלוט */
+            background: radial-gradient(circle at center, #1e2638 0%, #0a0d14 100%);
             color: #ffffff;
             font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex;
@@ -25,113 +27,106 @@
             overflow: hidden;
         }
 
-        /* רקע דינמי שמתפרס על כל המסך */
-        .background-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a1f2c 0%, #05070a 100%);
-            z-index: -1;
-        }
-
-        /* פריסת התוכן - ללא ריבוע מגביל */
-        .content-wrapper {
+        /* הריבוע הצף - עכשיו גדול ומרשים יותר */
+        .glass-panel {
+            position: relative;
+            z-index: 1;
+            width: 85%;
+            max-width: 1000px; /* הגדלתי את הרוחב המקסימלי */
+            padding: 80px 50px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
             text-align: center;
-            width: 90%;
-            max-width: 1200px;
-            animation: fadeIn 1.2s ease-out;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6);
+            animation: slideUp 1.2s ease-out;
         }
 
-        /* לוגו ענק ובולט */
-        .logo-container {
+        /* לוגו ענק */
+        .logo-wrapper {
             margin-bottom: 50px;
         }
 
         .logo-img {
-            width: 500px; /* הגדלה משמעותית */
-            max-width: 90%;
-            filter: drop-shadow(0 0 20px rgba(79, 172, 254, 0.25));
+            width: 550px; /* לוגו סופר בולט */
+            max-width: 95%;
+            /* צל לבן עדין מאוד מסביב ללוגו כדי להפריד אותו מהרקע הכהה */
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
         }
 
-        .headline {
-            font-size: 1.8rem;
+        .tagline {
+            font-size: 1.6rem;
             font-weight: 200;
-            letter-spacing: 12px;
+            letter-spacing: 10px;
             text-transform: uppercase;
             color: var(--primary-blue);
-            margin-bottom: 30px;
-            opacity: 0.8;
+            margin-bottom: 35px;
         }
 
-        .description {
-            font-size: 1.6rem;
-            line-height: 1.4;
-            max-width: 900px;
+        .main-text {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            color: #d1d5db;
+            max-width: 800px;
             margin: 0 auto 50px auto;
-            color: #e2e8f0;
             font-weight: 300;
         }
 
-        .highlight {
+        .bold-white {
             color: #ffffff;
             font-weight: 700;
-            border-bottom: 2px solid var(--primary-blue);
         }
 
-        /* כפתור רחב ויוקרתי */
-        .action-button {
+        /* כפתור יוקרתי רחב */
+        .cta-button {
             display: inline-block;
-            padding: 22px 60px;
-            background: transparent;
-            color: var(--primary-blue);
-            border: 1px solid var(--primary-blue);
+            padding: 20px 55px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #05070a;
             text-decoration: none;
-            border-radius: 5px;
-            font-weight: 600;
+            border-radius: 15px;
+            font-weight: 800;
             font-size: 1.1rem;
-            letter-spacing: 2px;
-            transition: all 0.4s ease;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .action-button:hover {
-            background: var(--primary-blue);
-            color: #000;
-            box-shadow: 0 0 30px rgba(79, 172, 254, 0.4);
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(79, 172, 254, 0.4);
         }
 
-        .stealth-tag {
-            margin-top: 60px;
-            font-size: 0.9rem;
-            letter-spacing: 4px;
-            color: #475569;
+        .footer-note {
+            margin-top: 50px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 3px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <div class="background-overlay"></div>
-    
-    <div class="content-wrapper">
-        <div class="logo-container">
+    <div class="glass-panel">
+        <div class="logo-wrapper">
             <img src="logo.png" alt="DYON Systems" class="logo-img">
         </div>
 
-        <div class="headline">Next-Generation Satellite OS</div>
+        <div class="tagline">Orbital Infrastructure</div>
         
-        <p class="description">
-            Architecting the <span class="highlight">Hybrid Infrastructure</span> for orbital autonomy. <br>
-            Separating mission safety from high-performance AI.
+        <p class="main-text">
+            Architecting the first <span class="bold-white">Standardized Hybrid OS</span> for the NewSpace era. <br>
+            Bridging high-performance Edge-AI with mission-critical reliability.
         </p>
         
-        <a href="mailto:contact@dyonsystems.com" class="action-button">INQUIRE FOR PARTNERSHIP</a>
+        <a href="mailto:contact@dyonsystems.com" class="cta-button">PARTNERSHIP INQUIRIES</a>
         
-        <div class="stealth-tag">OP01 | STEALTH MISSION STATUS</div>
+        <div class="footer-note">STEALTH MODE · Q4 2026 MISSION</div>
     </div>
 </body>
 </html>
