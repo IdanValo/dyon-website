@@ -3,119 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DYON Systems | Secure Space Infrastructure</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Space+Grotesk:wght@300;600&display=swap" rel="stylesheet">
+    <title>DYON Systems | Secure Orbital Infrastructure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@200;500&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --accent: #00f0ff; 
-            --bg: #000205; 
-            --text-gray: rgba(209, 217, 230, 0.8);
+            --cyber-blue: #00f0ff; 
+            --deep-space: #01040a;
+            --circuit-color: rgba(0, 240, 255, 0.07);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body, html { 
             width: 100%; height: 100%; 
-            background: var(--bg); color: #fff; 
-            font-family: 'Space Grotesk', sans-serif; 
+            background: var(--deep-space); color: #fff; 
+            font-family: 'JetBrains Mono', monospace; 
             overflow: hidden; touch-action: none;
         }
 
-        /* Boot Loader */
+        /* Boot Sequence */
         #boot {
             position: fixed; inset: 0; background: #000; z-index: 10000;
             display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 1s steps(4);
         }
-        #boot-text { font-family: monospace; color: var(--accent); font-size: 0.9rem; letter-spacing: 3px; }
 
-        /* Background Layers */
-        canvas { position: absolute; inset: 0; z-index: 0; }
-        .nebula {
+        /* Background: Circuit meets Space */
+        .background-container {
             position: fixed; inset: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.05), transparent 70%);
-            filter: blur(100px); pointer-events: none;
+            background: 
+                radial-gradient(circle at center, #0a1b3d 0%, var(--deep-space) 100%);
+            z-index: 0;
+        }
+
+        .circuit-grid {
+            position: absolute; inset: 0;
+            background-image: 
+                linear-gradient(var(--circuit-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--circuit-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle, black 30%, transparent 80%);
+            z-index: 1;
         }
 
         /* Hero Scene */
         #scene {
             position: relative; width: 100%; height: 100vh;
             display: flex; align-items: center; justify-content: center;
-            opacity: 0; transition: 2s cubic-bezier(0.19, 1, 0.22, 1);
-            perspective: 1200px; z-index: 10;
+            opacity: 0; transition: 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 10;
         }
         #scene.active { opacity: 1; }
 
-        .content-wrap {
-            position: relative; width: 90%; max-width: 1100px;
+        .content-frame {
+            position: relative; width: 92%; max-width: 1100px;
             padding: clamp(40px, 8vh, 100px) 20px;
-            text-align: center; transform-style: preserve-3d;
+            background: rgba(0, 20, 40, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0,240,255,0.05);
+            text-align: center;
         }
 
-        /* Logo Floating Logic */
-        .logo-box { position: relative; display: inline-block; margin-bottom: clamp(30px, 5vh, 60px); }
-        .logo {
-            width: clamp(280px, 50vw, 620px);
-            filter: drop-shadow(0 0 40px rgba(0, 240, 255, 0.3));
-            animation: float 8s infinite ease-in-out;
+        /* Cyber Shield Rings */
+        .shield-ring {
+            position: absolute; top: 50%; left: 50%;
+            border: 1px dashed var(--cyber-blue);
+            border-radius: 50%; opacity: 0.15;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
         }
-        @keyframes float { 50% { transform: translateY(-15px) rotateX(5deg); } }
+        .ring-1 { width: 400px; height: 400px; animation: rotate 20s linear infinite; }
+        .ring-2 { width: 550px; height: 550px; animation: rotate 30s linear infinite reverse; }
+        @keyframes rotate { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
         /* Typography */
-        h1 {
+        .tagline {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.6rem, 2vw, 0.8rem);
-            letter-spacing: clamp(6px, 1.5vw, 15px);
-            color: var(--accent); text-transform: uppercase;
-            margin-bottom: 25px; opacity: 0.7;
+            font-size: clamp(0.6rem, 2vw, 0.75rem);
+            letter-spacing: 8px; color: var(--cyber-blue);
+            margin-bottom: 25px; opacity: 0.8;
+            text-transform: uppercase;
+        }
+
+        .logo {
+            width: clamp(280px, 50vw, 600px);
+            filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.3));
+            margin-bottom: 35px;
+            z-index: 5;
         }
 
         .headline {
-            font-size: clamp(1.1rem, 3.8vw, 1.6rem);
+            font-size: clamp(1rem, 3.5vw, 1.5rem);
             line-height: 1.6; font-weight: 300;
-            max-width: 850px; margin: 0 auto 50px;
-            color: var(--text-gray);
+            max-width: 850px; margin: 0 auto 45px;
+            color: #d1d9e6;
         }
-        .headline strong { color: #fff; font-weight: 700; }
-        .highlight { color: #fff; font-weight: 700; border-bottom: 1px solid var(--accent); }
+        .highlight { color: #fff; font-weight: 600; border-bottom: 1px solid var(--cyber-blue); }
 
-        /* Interaction Elements */
         .cta {
-            display: inline-block; padding: clamp(18px, 2.5vh, 24px) clamp(40px, 6vw, 80px);
-            border: 1px solid var(--accent); color: #fff;
+            display: inline-block; padding: 20px 60px;
+            border: 1px solid var(--cyber-blue); color: #fff;
             text-decoration: none; font-family: 'Orbitron', sans-serif;
-            letter-spacing: 5px; font-weight: 900; background: rgba(0, 240, 255, 0.05);
-            transition: 0.4s; position: relative;
+            letter-spacing: 4px; font-weight: 700;
+            background: rgba(0, 240, 255, 0.05);
+            transition: 0.4s;
         }
-        .cta:hover { background: var(--accent); color: #000; box-shadow: 0 0 60px var(--accent); transform: scale(1.05); }
+        .cta:hover { 
+            background: var(--cyber-blue); color: #000; 
+            box-shadow: 0 0 50px var(--cyber-blue);
+        }
 
-        /* HUD - Desktop Only */
-        .hud { position: absolute; font-family: monospace; font-size: 10px; color: var(--accent); opacity: 0.3; letter-spacing: 2px; }
-        .tl { top: 30px; left: 30px; text-align: left; }
-        .br { bottom: 30px; right: 30px; text-align: right; }
+        /* Hardware Telemetry */
+        .hud-data {
+            position: absolute; font-size: 10px; color: var(--cyber-blue); 
+            opacity: 0.4; letter-spacing: 1px; font-family: monospace;
+        }
+        .top-left { top: 15px; left: 20px; text-align: left; }
+        .bottom-right { bottom: 15px; right: 20px; text-align: right; }
 
         @media (max-width: 768px) {
-            .hud { display: none; }
-            .content-wrap { padding: 20px 10px; }
-            .cta { width: 100%; }
+            .shield-ring, .hud-data { display: none; }
+            .content-frame { border-radius: 0; border-left: none; border-right: none; }
         }
     </style>
 </head>
 <body>
 
-<div id="boot"><div id="boot-text">INITIALIZING DYON_CORE...</div></div>
+<div id="boot"><div style="color:var(--cyber-blue); letter-spacing:5px;">SECURE_BOOT_SEQUENCE...</div></div>
+
+<div class="background-container">
+    <div class="circuit-grid"></div>
+</div>
 
 <div id="scene">
-    <canvas id="canvas"></canvas>
-    <div class="nebula"></div>
+    <div class="shield-ring ring-1"></div>
+    <div class="shield-ring ring-2"></div>
     
-    <div class="hud tl">DYON_V1 // KERNEL_ACTIVE<br>ISOLATION: ENFORCED<br>STATUS: SECURE</div>
-    
-    <div class="content-wrap">
-        <h1>Satellite Operating System</h1>
-        
-        <div class="logo-box">
-            <img src="logo.png" class="logo" alt="DYON Systems">
+    <div class="content-frame">
+        <div class="hud-data top-left">
+            [CPU_SHIELD: ENABLED]<br>
+            [KERNEL_INTEGRITY: 100%]<br>
+            [ENCLAVE: ISOLATED]
         </div>
+
+        <div class="tagline">Orbital Kernel Infrastructure</div>
+        
+        <img src="logo.png" class="logo" alt="DYON Systems">
 
         <p class="headline">
             Building the <strong>Secure Infrastructure</strong> for the NewSpace Era.<br>
@@ -123,71 +156,29 @@
             on satellites with <span class="highlight">Zero-Mission-Risk</span>.
         </p>
 
-        <a href="mailto:contact@dyonsystems.com" class="cta">ESTABLISH CONNECTION</a>
-    </div>
+        <a href="mailto:contact@dyonsystems.com" class="cta">ESTABLISH SECURE LINK</a>
 
-    <div class="hud br">NODE: 01 // ORBITAL_FRAME<br>MISSION: STEALTH_MODE<br>TRUST_MODEL: HARDWARE</div>
+        <div class="hud-data bottom-right">
+            FRAME: 0xFF021<br>
+            NODE: LEO_CYBER_UNIT<br>
+            SECURITY: LEVEL_A
+        </div>
+    </div>
 </div>
 
 <script>
-    // 1. Boot Logic
     setTimeout(() => {
         document.getElementById('boot').style.opacity = '0';
         document.getElementById('scene').classList.add('active');
         setTimeout(() => document.getElementById('boot').remove(), 1000);
-    }, 1500);
+    }, 1200);
 
-    // 2. Parallax
+    // Subtle movement logic
     document.addEventListener('mousemove', e => {
-        const x = (window.innerHeight / 2 - e.clientY) / 35;
-        const y = (e.clientX - window.innerWidth / 2) / 35;
-        document.querySelector('.content-wrap').style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
+        const x = (window.innerHeight / 2 - e.clientY) / 50;
+        const y = (e.clientX - window.innerWidth / 2) / 50;
+        document.querySelector('.content-frame').style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
     });
-
-    // 3. Starfield Physics
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    
-    function init() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', init);
-    init();
-
-    class Particle {
-        constructor() {
-            this.reset();
-        }
-        reset() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 1.5;
-            this.speed = Math.random() * 0.5 + 0.2;
-            this.a = Math.random() * Math.PI * 2;
-        }
-        update() {
-            this.x += Math.cos(this.a) * this.speed;
-            this.y += Math.sin(this.a) * this.speed;
-            if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
-        }
-        draw() {
-            ctx.fillStyle = "rgba(0, 240, 255, 0.3)";
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    for(let i=0; i<100; i++) particles.push(new Particle());
-
-    function animate() {
-        ctx.clearRect(0,0, canvas.width, canvas.height);
-        particles.forEach(p => { p.update(); p.draw(); });
-        requestAnimationFrame(animate);
-    }
-    animate();
 </script>
 </body>
 </html>
