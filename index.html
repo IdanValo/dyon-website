@@ -17,11 +17,14 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* תיקון הגלילה */
         body, html { 
             width: 100%; height: 100%; 
             background: var(--bg); color: #fff; 
             font-family: 'JetBrains Mono', monospace; 
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto; /* מאפשר גלילה אנכית במידת הצורך */
         }
 
         /* ===== SECURE BOOT LOADER ===== */
@@ -39,11 +42,14 @@
 
         /* ===== MAIN INTERFACE ===== */
         #main-site {
-            position: relative; width: 100%; height: 100vh;
+            position: relative; 
+            width: 100%; 
+            min-height: 100vh; /* מבטיח לפחות גובה מסך מלא */
             display: flex; align-items: center; justify-content: center;
             opacity: 0; visibility: hidden;
             transition: opacity 1.5s ease;
             z-index: 5;
+            padding: 40px 0; /* מרווח כדי שהתוכן לא ייצמד לקצוות בגלילה */
         }
         #main-site.active { opacity: 1; visibility: visible; }
 
@@ -117,7 +123,6 @@
         .tl { top: 20px; left: 25px; text-align: left; }
         .br { bottom: 20px; right: 25px; text-align: right; }
 
-        /* אייקון לינקדאין בפינה */
         .social-link {
             position: absolute;
             bottom: 20px;
@@ -136,9 +141,11 @@
         }
 
         @media (max-width: 768px) {
-            .container { border: none; background: transparent; padding-top: 60px; }
-            .hud, .social-link { display: none; } /* במובייל מסתירים כדי למנוע עומס */
-            .cta { width: 100%; padding: 18px 0; }
+            body, html { overflow-y: scroll; } /* מכריח אפשרות גלילה במובייל */
+            #main-site { padding: 60px 0 100px 0; height: auto; } /* מרווח גדול למטה במובייל */
+            .container { border: none; background: transparent; padding-top: 40px; }
+            .hud, .social-link { display: none; }
+            .cta { width: 100%; padding: 18px 0; margin-bottom: 40px; }
         }
     </style>
 </head>
@@ -178,7 +185,7 @@
 
         <a href="https://www.linkedin.com/showcase/dyon-systems" target="_blank" class="social-link" title="Visit DYON Systems on LinkedIn">
             <i class="fa-brands fa-linkedin"></i>
-        </div>
+        </a>
     </div>
 </div>
 
@@ -210,6 +217,8 @@
                 setTimeout(() => {
                     screen.style.display = 'none';
                     site.classList.add('active');
+                    // מוודא שהגלילה זמינה אחרי שהאתר נטען
+                    document.body.style.overflowY = "auto";
                 }, 800);
             }, 500);
         }
